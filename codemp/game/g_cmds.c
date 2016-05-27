@@ -6803,11 +6803,6 @@ static void Cmd_Launch_f(gentity_t *ent)
 	if (!ent->client)
 		return;
 
-	if (trap->Argc() != 2 && trap->Argc() != 7) {
-		trap->SendServerCommand( ent-g_entities, "print \"Usage: /launch <speed> or /launch <x y z yaw xyspeed zspeed>\n\"" );
-		return;
-	}
-
 	if (!ent->client->pers.practice) {
 		trap->SendServerCommand(ent-g_entities, "print \"You must be in practice mode to use this command!\n\"");
 		return;
@@ -6817,6 +6812,11 @@ static void Cmd_Launch_f(gentity_t *ent)
 		trap->SendServerCommand(ent-g_entities, "print \"You must be in race mode to use this command!\n\""); //Should never happen since cant be in practice w/o racemode? or... w/e
 		return;
 	}*/
+
+	if (trap->Argc() != 2 && trap->Argc() != 7) {
+		trap->SendServerCommand( ent-g_entities, "print \"Usage: /launch <speed> or /launch <x y z yaw xyspeed zspeed>\n\"" );
+		return;
+	}
 
 	if (trap->Argc() == 2) {
 		int xyspeed;
