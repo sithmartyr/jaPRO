@@ -6558,13 +6558,18 @@ static void Cmd_MovementStyle_f(gentity_t *ent)
 	if (!ent->client)
 		return;
 
-	if (trap->Argc() != 2) {
-		trap->SendServerCommand( ent-g_entities, "print \"Usage: /move <siege, jka, qw, cpm, q3, pjk, wsw, rjq3, rjcpm, swoop, or jetpack>.\n\"" );
+	if (!g_raceMode.integer) {
+		trap->SendServerCommand(ent - g_entities, "print \"This command is not allowed in this gamemode!\n\"");
 		return;
 	}
 
-	if (!g_raceMode.integer) {
-		trap->SendServerCommand(ent-g_entities, "print \"This command is not allowed in this gamemode!\n\"");
+	if (!ent->client->sess.raceMode) {
+		trap->SendServerCommand(ent - g_entities, "print \"You must be in racemode to use this command!\n\"");
+		return;
+	}
+
+	if (trap->Argc() != 2) {
+		trap->SendServerCommand( ent-g_entities, "print \"Usage: /move <siege, jka, qw, cpm, q3, pjk, wsw, rjq3, rjcpm, swoop, or jetpack>.\n\"" );
 		return;
 	}
 
@@ -6574,11 +6579,6 @@ static void Cmd_MovementStyle_f(gentity_t *ent)
 		return;
 	}
 	*/
-
-	if (!ent->client->sess.raceMode) {
-		trap->SendServerCommand(ent-g_entities, "print \"You must be in racemode to use this command!\n\"");
-		return;
-	}
 
 	if (VectorLength(ent->client->ps.velocity) && !ent->client->ps.m_iVehicleNum) {
 		trap->SendServerCommand(ent-g_entities, "print \"You must be standing still to use this command!\n\"");
@@ -6648,7 +6648,7 @@ static void Cmd_JumpChange_f(gentity_t *ent)
 		return;
 
 	if (!ent->client->sess.raceMode) {
-		trap->SendServerCommand(ent - g_entities, "print \"You must be in racemode to use this command!\n\"");
+		trap->SendServerCommand(ent-g_entities, "print \"You must be in racemode to use this command!\n\"");
 		return;
 	}
 
@@ -6684,13 +6684,18 @@ static void Cmd_BackwardsRocket_f(gentity_t *ent)
 	if (!ent->client)
 		return;
 
-	if (trap->Argc() != 1) {
-		trap->SendServerCommand( ent-g_entities, "print \"Usage: /rocketChange\n\"" );
+	if (!g_raceMode.integer) {
+		trap->SendServerCommand(ent - g_entities, "print \"This command is not allowed in this gamemode!\n\"");
 		return;
 	}
 
-	if (!g_raceMode.integer) {
-		trap->SendServerCommand(ent-g_entities, "print \"This command is not allowed in this gamemode!\n\"");
+	if (!ent->client->sess.raceMode) {
+		trap->SendServerCommand(ent - g_entities, "print \"You must be in racemode to use this command!\n\"");
+		return;
+	}
+
+	if (trap->Argc() != 1) {
+		trap->SendServerCommand( ent-g_entities, "print \"Usage: /rocketChange\n\"" );
 		return;
 	}
 
@@ -6700,11 +6705,6 @@ static void Cmd_BackwardsRocket_f(gentity_t *ent)
 		return;
 	}
 	*/
-
-	if (!ent->client->sess.raceMode) {
-		trap->SendServerCommand(ent-g_entities, "print \"You must be in racemode to use this command!\n\"");
-		return;
-	}
 
 	if (VectorLength(ent->client->ps.velocity)) {
 		trap->SendServerCommand(ent-g_entities, "print \"You must be standing still to use this command!\n\"");
@@ -6731,46 +6731,46 @@ static void Cmd_Hide_f(gentity_t *ent)
 		return;
 	}
 
-		if (ent->client->sess.fullAdmin) {//Logged in as full admin
-			if (!(g_fullAdminLevel.integer & (1 << A_NOFOLLOW))) {
-				if (!ent->client->sess.raceMode && g_raceMode.integer && g_allowNoFollow.integer) {
-					trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (hide) outside of racemode.\n\"" );
-					ent->client->pers.noFollow = qfalse;
-					return;
-				}
-				else if (!ent->client->sess.raceMode || !g_allowNoFollow.integer) {
-					trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (hide).\n\"" );
-					ent->client->pers.noFollow = qfalse;
-					return;
-				}
-			}
-		}
-		else if (ent->client->sess.juniorAdmin) {//Logged in as junior admin
-			if (!(g_juniorAdminLevel.integer & (1 << A_NOFOLLOW))) {
-				if (!ent->client->sess.raceMode && g_raceMode.integer && g_allowNoFollow.integer) {
-					trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (hide) outside of racemode.\n\"" );
-					ent->client->pers.noFollow = qfalse;
-					return;
-				}
-				else if (!ent->client->sess.raceMode || !g_allowNoFollow.integer) {
-					trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (hide).\n\"" );
-					ent->client->pers.noFollow = qfalse;
-					return;
-				}
-			}
-		}
-		else {//Not logged in
+	if (ent->client->sess.fullAdmin) {//Logged in as full admin
+		if (!(g_fullAdminLevel.integer & (1 << A_NOFOLLOW))) {
 			if (!ent->client->sess.raceMode && g_raceMode.integer && g_allowNoFollow.integer) {
 				trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (hide) outside of racemode.\n\"" );
 				ent->client->pers.noFollow = qfalse;
 				return;
 			}
-			else if (!g_allowNoFollow.integer || !ent->client->sess.raceMode) {
-				trap->SendServerCommand( ent-g_entities, "print \"You must be logged in to use this command (hide).\n\"" );
+			else if (!ent->client->sess.raceMode || !g_allowNoFollow.integer) {
+				trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (hide).\n\"" );
 				ent->client->pers.noFollow = qfalse;
 				return;
 			}
 		}
+	}
+	else if (ent->client->sess.juniorAdmin) {//Logged in as junior admin
+		if (!(g_juniorAdminLevel.integer & (1 << A_NOFOLLOW))) {
+			if (!ent->client->sess.raceMode && g_raceMode.integer && g_allowNoFollow.integer) {
+				trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (hide) outside of racemode.\n\"" );
+				ent->client->pers.noFollow = qfalse;
+				return;
+			}
+			else if (!ent->client->sess.raceMode || !g_allowNoFollow.integer) {
+				trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (hide).\n\"" );
+				ent->client->pers.noFollow = qfalse;
+				return;
+			}
+		}
+	}
+	else {//Not logged in
+		if (!ent->client->sess.raceMode && g_raceMode.integer && g_allowNoFollow.integer) {
+			trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (hide) outside of racemode.\n\"" );
+			ent->client->pers.noFollow = qfalse;
+			return;
+		}
+		else if (!g_allowNoFollow.integer || !ent->client->sess.raceMode) {
+			trap->SendServerCommand( ent-g_entities, "print \"You must be logged in to use this command (hide).\n\"" );
+			ent->client->pers.noFollow = qfalse;
+			return;
+		}
+	}
 
 	if (ent->client->pers.stats.startTime || ent->client->pers.stats.startTimeFlag) {
 		trap->SendServerCommand(ent-g_entities, "print \"Hide status updated: timer reset.\n\"");
@@ -6813,10 +6813,10 @@ static void Cmd_Launch_f(gentity_t *ent)
 		return;
 	}
 
-	if (!ent->client->sess.raceMode) {
+	/*if (!ent->client->sess.raceMode) {
 		trap->SendServerCommand(ent-g_entities, "print \"You must be in race mode to use this command!\n\""); //Should never happen since cant be in practice w/o racemode? or... w/e
 		return;
-	}
+	}*/
 
 	if (trap->Argc() == 2) {
 		int xyspeed;
@@ -6893,13 +6893,13 @@ static void Cmd_Practice_f(gentity_t *ent)
 	if (!ent->client)
 		return;
 
-	if (trap->Argc() != 1) {
-		trap->SendServerCommand( ent-g_entities, "print \"Usage: /practice\n\"" );
+	if (!ent->client->sess.raceMode) {
+		trap->SendServerCommand(ent-g_entities, "print \"You must be in race mode to use this command!\n\"");
 		return;
 	}
 
-	if (!ent->client->sess.raceMode) {
-		trap->SendServerCommand(ent-g_entities, "print \"You must be in race mode to use this command!\n\""); //Should never happen since cant be in practice w/o racemode? or... w/e
+	if (trap->Argc() != 1) {
+		trap->SendServerCommand(ent - g_entities, "print \"Usage: /practice\n\"");
 		return;
 	}
 
@@ -6931,66 +6931,67 @@ static void Cmd_Practice_f(gentity_t *ent)
 //[JAPRO - Serverside - All - Amtelemark Function - Start]
 void Cmd_Amtelemark_f(gentity_t *ent)
 {
-		if (!ent->client)
-			return;
+	if (!ent->client)
+		return;
 		
-		if (ent->client && ent->client->ps.duelInProgress && ent->client->pers.lastUserName[0]) {
-			gentity_t *duelAgainst = &g_entities[ent->client->ps.duelIndex];
-			if (duelAgainst->client && duelAgainst->client->pers.lastUserName[0]) {
-				trap->SendServerCommand( ent-g_entities, va("print \"You are not authorized to use this command (amtele) in ranked duels.\n\"") );
-				return; //Dont allow amtele in ranked duels ever..
-			}
+	if (ent->client && ent->client->ps.duelInProgress && ent->client->pers.lastUserName[0]) {
+		gentity_t *duelAgainst = &g_entities[ent->client->ps.duelIndex];
+		if (duelAgainst->client && duelAgainst->client->pers.lastUserName[0]) {
+			trap->SendServerCommand( ent-g_entities, va("print \"You are not authorized to use this command (amtele) in ranked duels.\n\"") );
+			return; //Dont allow amtele in ranked duels ever..
 		}
+	}
 
-		if (ent->client->sess.fullAdmin) {//Logged in as full admin
-			if (!(g_fullAdminLevel.integer & (1 << A_TELEMARK))) {
-				if (!ent->client->sess.raceMode && g_raceMode.integer && g_allowRaceTele.integer) {
-					trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (amTelemark) outside of racemode.\n\"" );
-					return;
-				}
-				else if (ent->client->sess.raceMode && !g_allowRaceTele.integer) {
-					trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (amTelemark).\n\"" );
-					return;
-				}
-			}
-		}
-		else if (ent->client->sess.juniorAdmin) {//Logged in as junior admin
-			if (!(g_juniorAdminLevel.integer & (1 << A_TELEMARK))) {
-				if (!ent->client->sess.raceMode && g_raceMode.integer && g_allowRaceTele.integer) {
-					trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (amTelemark) outside of racemode.\n\"" );
-					return;
-				}
-				else if (ent->client->sess.raceMode && !g_allowRaceTele.integer) {
-					trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (amTelemark).\n\"" );
-					return;
-				}
-			}
-		}
-		else {//Not logged in
+	if (ent->client->sess.fullAdmin) {//Logged in as full admin
+		if (!(g_fullAdminLevel.integer & (1 << A_TELEMARK))) {
 			if (!ent->client->sess.raceMode && g_raceMode.integer && g_allowRaceTele.integer) {
 				trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (amTelemark) outside of racemode.\n\"" );
 				return;
 			}
-			else if (!g_allowRaceTele.integer || !g_raceMode.integer) {
-				trap->SendServerCommand( ent-g_entities, "print \"You must be logged in to use this command (amTelemark).\n\"" );
+			else if (ent->client->sess.raceMode && !g_allowRaceTele.integer) {
+				trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (amTelemark).\n\"" );
 				return;
 			}
 		}
-
-		/*
-		if (ent->client->sess.sessionTeam == TEAM_SPECTATOR) { //Ehh. bandaid fix to stop a lot of potential abuse.. droptoground fixes this?
-			trap->SendServerCommand( ent-g_entities, "print \"You must be ingame to use this command (amTelemark).\n\"" ); 
+	}
+	else if (ent->client->sess.juniorAdmin) {//Logged in as junior admin
+		if (!(g_juniorAdminLevel.integer & (1 << A_TELEMARK))) {
+			if (!ent->client->sess.raceMode && g_raceMode.integer && g_allowRaceTele.integer) {
+				trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (amTelemark) outside of racemode.\n\"" );
+				return;
+			}
+			else if (ent->client->sess.raceMode && !g_allowRaceTele.integer) {
+				trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (amTelemark).\n\"" );
+				return;
+			}
+		}
+	}
+	else {//Not logged in
+		if (!ent->client->sess.raceMode && g_raceMode.integer && g_allowRaceTele.integer) {
+			trap->SendServerCommand( ent-g_entities, "print \"You are not authorized to use this command (amTelemark) outside of racemode.\n\"" );
 			return;
 		}
-		*/
+		else if (!g_allowRaceTele.integer || !g_raceMode.integer) {
+			trap->SendServerCommand( ent-g_entities, "print \"You must be logged in to use this command (amTelemark).\n\"" );
+			return;
+		}
+	}
 
-		VectorCopy(ent->client->ps.origin, ent->client->pers.telemarkOrigin);
-		if (ent->client->sess.sessionTeam == TEAM_SPECTATOR && (ent->client->ps.pm_flags & PMF_FOLLOW))
-			ent->client->pers.telemarkOrigin[2] += 58;
-		ent->client->pers.telemarkAngle = ent->client->ps.viewangles[YAW];
-		ent->client->pers.telemarkPitchAngle = ent->client->ps.viewangles[PITCH];
-		trap->SendServerCommand( ent-g_entities, va("print \"Teleport Marker: ^3<%i, %i, %i> %i, %i\n\"", 
-			(int)ent->client->pers.telemarkOrigin[0], (int)ent->client->pers.telemarkOrigin[1], (int)ent->client->pers.telemarkOrigin[2], (int)ent->client->pers.telemarkAngle, (int)ent->client->pers.telemarkPitchAngle ));
+	/*
+	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR) { //Ehh. bandaid fix to stop a lot of potential abuse.. droptoground fixes this?
+		trap->SendServerCommand( ent-g_entities, "print \"You must be ingame to use this command (amTelemark).\n\"" ); 
+		return;
+	}
+	*/
+
+	VectorCopy(ent->client->ps.origin, ent->client->pers.telemarkOrigin);
+	if (ent->client->sess.sessionTeam == TEAM_SPECTATOR && (ent->client->ps.pm_flags & PMF_FOLLOW))
+		ent->client->pers.telemarkOrigin[2] += 58;
+	
+	ent->client->pers.telemarkAngle = ent->client->ps.viewangles[YAW];
+	ent->client->pers.telemarkPitchAngle = ent->client->ps.viewangles[PITCH];
+	trap->SendServerCommand( ent-g_entities, va("print \"Teleport Marker: ^3<%i, %i, %i> %i, %i\n\"", 
+		(int)ent->client->pers.telemarkOrigin[0], (int)ent->client->pers.telemarkOrigin[1], (int)ent->client->pers.telemarkOrigin[2], (int)ent->client->pers.telemarkAngle, (int)ent->client->pers.telemarkPitchAngle ));
 }
 //[JAPRO - Serverside - All - Amtelemark Function - End]
 
@@ -6998,7 +6999,7 @@ void Cmd_RaceTele_f(gentity_t *ent)
 {
 	if (trap->Argc() > 2 && trap->Argc() != 4) {
 		trap->SendServerCommand( ent-g_entities, "print \"Usage: /amTele to teleport to your telemark or /amTele <client> or /amtele <X Y Z>\n\"" );
-	}		
+	}
 	if (trap->Argc() == 1) {//Amtele to telemark
 		if (ent->client->pers.telemarkOrigin[0] != 0 || ent->client->pers.telemarkOrigin[1] != 0 || ent->client->pers.telemarkOrigin[2] != 0 || ent->client->pers.telemarkAngle != 0) {
 			vec3_t	angles = {0, 0, 0};
@@ -7051,10 +7052,14 @@ void Cmd_WarpList_f(gentity_t *ent)
 	char buf[MAX_STRING_CHARS-64] = {0};
 	int i, MAX_NUM_WARPS = 64;
 
-	if (!ent->client) {
-		trap->SendServerCommand( ent-g_entities, "print \"You can only use this command in racemode!\n\"" );
+	if (!ent->client)
+		return;
+
+	if (!ent->client->sess.raceMode) {
+		trap->SendServerCommand(ent-g_entities, "print \"You must be in race mode to use this command!\n\"");
 		return;
 	}
+
 	if (trap->Argc() != 1) {
 		trap->SendServerCommand( ent-g_entities, "print \"Usage: /warplist\n\"" );
 		return;
@@ -7077,7 +7082,10 @@ void Cmd_Warp_f(gentity_t *ent)
 	char enteredWarpName[MAX_NETNAME];
 	vec3_t	angles = {0, 0, 0}, origin = {0, 0, 0};
 
-	if (!ent->client || !ent->client->sess.raceMode) {
+	if (!ent->client)
+		return;
+
+	if (!ent->client->sess.raceMode) {
 		trap->SendServerCommand( ent-g_entities, "print \"You can only use this command in racemode!\n\"" );
 		return;
 	}
@@ -7361,8 +7369,8 @@ void Cmd_Amrename_f(gentity_t *ent)
  
    if ( trap->Argc() != 3) 
    { 
-     trap->SendServerCommand( ent-g_entities, "print \"Usage: /amRename <client> <newname>.\n\"" );
-      return;
+	   trap->SendServerCommand( ent-g_entities, "print \"Usage: /amRename <client> <newname>.\n\"" );
+	   return;
    } 
    trap->Argv(1, arg, sizeof(arg)); 
 
