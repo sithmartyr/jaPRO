@@ -6647,13 +6647,13 @@ static void Cmd_JumpChange_f(gentity_t *ent)
 	if (!ent->client)
 		return;
 
-	if (trap->Argc() != 2) {
-		trap->SendServerCommand( ent-g_entities, "print \"Usage: /jump <level>\n\"" );
+	if (!ent->client->sess.raceMode) {
+		trap->SendServerCommand(ent - g_entities, "print \"You must be in racemode to use this command!\n\"");
 		return;
 	}
 
-	if (!ent->client->sess.raceMode) {
-		trap->SendServerCommand(ent-g_entities, "print \"You must be in racemode to use this command!\n\"");
+	if (trap->Argc() != 2) {
+		trap->SendServerCommand( ent-g_entities, "print \"Usage: /jump <level>\n\"" );
 		return;
 	}
 
