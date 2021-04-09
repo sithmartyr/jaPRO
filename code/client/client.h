@@ -206,6 +206,11 @@ typedef struct {
 	qhandle_t	charSetShader;
 	qhandle_t	whiteShader;
 	qhandle_t	consoleShader;
+
+	float		cgxadj;
+	float		cgyadj;
+	float		uixadj;
+	float		uiyadj;
 } clientStatic_t;
 
 #define	CON_TEXTSIZE	0x30000 //was 32768

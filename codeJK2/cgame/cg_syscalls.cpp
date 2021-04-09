@@ -545,3 +545,8 @@ void cgi_UI_Menu_Paint( void *menu, qboolean force )
 {
 	Q_syscall( CG_OPENJK_MENU_PAINT, menu, force );
 }
+
+void trap_MVAPI_SetVirtualScreen(float w, float h)
+{
+	Q_syscall(CG_MVAPI_SETVIRTUALSCREEN, PASSFLOAT(w), PASSFLOAT(h));
+}

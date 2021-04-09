@@ -712,7 +712,8 @@ void CG_DrawCenterString( void )
 {
 	char	*start;
 	int		l;
-	int		x, y, w;
+	int		y, w, h;
+	float	x;
 	float	*color;
 
 	if ( !cg.centerPrintTime ) {
@@ -761,7 +762,7 @@ void CG_DrawCenterString( void )
 
 		w = cgi_R_Font_StrLenPixels(linebuffer, cgs.media.qhFontMedium, 1.0f);
 
-		x = ( SCREEN_WIDTH - w ) / 2;
+		x = 0.5f * (cgs.screenWidth - w);
 
 		cgi_R_Font_DrawString(x,y,linebuffer, textcolor_center, cgs.media.qhFontMedium, -1, 1.0f);
 

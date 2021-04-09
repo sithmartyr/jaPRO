@@ -85,6 +85,7 @@ const char *inv_names[] =
 };
 
 int	force_icons[NUM_FORCE_POWERS];
+int widescreenModificationCount = -1;
 
 
 int cgi_UI_GetMenuInfo(char *menuFile,int *x,int *y);
@@ -283,6 +284,8 @@ vmCvar_t	cg_updatedDataPadForcePower2;
 vmCvar_t	cg_updatedDataPadForcePower3;
 vmCvar_t	cg_updatedDataPadObjective;
 
+vmCvar_t	cg_widescreen;
+
 vmCvar_t	cg_thirdPerson;
 vmCvar_t	cg_thirdPersonRange;
 vmCvar_t	cg_thirdPersonMaxRange;
@@ -393,6 +396,8 @@ static cvarTable_t cvarTable[] = {
 	{ &cg_noPlayerAnims, "cg_noplayeranims", "0", CVAR_CHEAT },
 	{ &cg_footsteps, "cg_footsteps", "1", CVAR_CHEAT },
 
+	{ &cg_widescreen, "cg_widescreen", "1", CVAR_ARCHIVE },
+
 	{ &cg_thirdPerson, "cg_thirdPerson", "0", CVAR_SAVEGAME },
 	{ &cg_thirdPersonRange, "cg_thirdPersonRange", "80", CVAR_ARCHIVE },
 	{ &cg_thirdPersonMaxRange, "cg_thirdPersonMaxRange", "150", 0 },
@@ -454,6 +459,29 @@ void CG_RegisterCvars( void ) {
 	for ( i=0, cv=cvarTable; i<cvarTableSize; i++, cv++ ) {
 		cgi_Cvar_Register( cv->vmCvar, cv->cvarName, cv->defaultString, cv->cvarFlags );
 	}
+
+	widescreenModificationCount = cg_widescreen.modificationCount;
+
+}
+
+extern void trap_MVAPI_SetVirtualScreen(float w, float h);
+/*
+===================
+CG_UpdateWidescreen
+===================
+*/
+static void CG_UpdateWidescreen(void) {
+	if (cg_widescreen.integer) {
+		cgs.screenWidth = (float)SCREEN_HEIGHT * cgs.glconfig.vidWidth / cgs.glconfig.vidHeight;
+	}
+	else {
+		cgs.screenWidth = (float)SCREEN_WIDTH;
+	}
+	cgs.screenXFactor = (float)SCREEN_WIDTH / cgs.screenWidth;
+	cgs.screenXFactorInv = cgs.screenWidth / (float)SCREEN_WIDTH;
+
+	if (cg_widescreen.integer != 2)
+		trap_MVAPI_SetVirtualScreen(cgs.screenWidth, (float)SCREEN_HEIGHT);
 }
 
 /*
@@ -469,6 +497,11 @@ void CG_UpdateCvars( void ) {
 		if ( cv->vmCvar ) {
 			cgi_Cvar_Update( cv->vmCvar );
 		}
+	}
+
+	if (widescreenModificationCount != cg_widescreen.modificationCount) {
+		widescreenModificationCount = cg_widescreen.modificationCount;
+		CG_UpdateWidescreen();
 	}
 }
 
@@ -1607,6 +1640,7 @@ Ghoul2 Insert End
 		cgs.bias = 0;
 	}
 */
+
 	// get the gamestate from the client system
 	cgi_GetGameState( &cgs.gameState );
 
@@ -1712,6 +1746,10 @@ Ghoul2 Insert End
 	iCGResetCount = 0;
 
 	CG_RegisterCvars();
+
+	CG_InitConsoleCommands();
+
+	CG_UpdateWidescreen();
 
 //moved from CG_GameStateReceived because it's loaded sooner now
 	CG_InitLocalEntities();
@@ -2743,11 +2781,11 @@ void CG_DrawInventorySelect( void )
 {
 	int				i;
 	int				sideMax,holdCount,iconCnt;
-	int				smallIconSize,bigIconSize;
+	float			smallIconSize,bigIconSize;
 	int				sideLeftIconCnt,sideRightIconCnt;
 	int				count;
-	int				holdX,x,y,pad;
-	//int				height;
+	float			holdX,x,y,pad;
+	//int			height;
 //	int				tag;
 	float			addX;
 	vec4_t			textColor = { .312f, .75f, .621f, 1.0f };
@@ -2791,12 +2829,17 @@ void CG_DrawInventorySelect( void )
 	{
 		cgi_SP_GetStringTextString("INGAME_EMPTY_INV",text, sizeof(text) );
 		int w = cgi_R_Font_StrLenPixels( text, cgs.media.qhFontSmall, 1.0f );
-		x = ( SCREEN_WIDTH - w ) / 2;
+		x = ( cgs.screenWidth - w ) / 2;
 		CG_DrawProportionalString(x, y2 + 22, text, CG_CENTER | CG_SMALLFONT, colorTable[CT_ICON_BLUE]);
 		return;
 	}
 
-	sideMax = 3;	// Max number of icons on the side
+	smallIconSize = 40;
+	bigIconSize = 80;
+	pad = 16;
+
+	// Max number of icons on the side
+	sideMax = (cgs.screenWidth - 240 - bigIconSize) / (smallIconSize + pad) / 2;
 
 	// Calculate how many icons will appear to either side of the center one
 	holdCount = count - 1;	// -1 for the center icon
@@ -2822,11 +2865,7 @@ void CG_DrawInventorySelect( void )
 		i = INV_MAX-1;
 	}
 
-	smallIconSize = 40;
-	bigIconSize = 80;
-	pad = 16;
-
-	x = 320;
+	x = 0.5 * cgs.screenWidth;
 	y = 410;
 
 	// Left side ICONS
@@ -3328,8 +3367,8 @@ void CG_DrawForceSelect( void )
 {
 	int		i;
 	int		count;
-	int		smallIconSize,bigIconSize;
-	int		holdX,x,y,pad;
+	float	smallIconSize,bigIconSize;
+	float	holdX,x,y,pad;
 	int		sideLeftIconCnt,sideRightIconCnt;
 	int		sideMax,holdCount,iconCnt;
 	char	text[1024]={0};
@@ -3374,7 +3413,12 @@ void CG_DrawForceSelect( void )
 	// showing weapon select clears pickup item display, but not the blend blob
 	cg.itemPickupTime = 0;
 
-	sideMax = 3;	// Max number of icons on the side
+	smallIconSize = 30;
+	bigIconSize = 60;
+	pad = 12;
+
+	// Max number of icons on the side
+	sideMax = (cgs.screenWidth - 240 - bigIconSize) / (smallIconSize + pad) / 2;
 
 	// Calculate how many icons will appear to either side of the center one
 	holdCount = count - 1;	// -1 for the center icon
@@ -3394,11 +3438,7 @@ void CG_DrawForceSelect( void )
 		sideRightIconCnt = holdCount - sideLeftIconCnt;
 	}
 
-	smallIconSize = 30;
-	bigIconSize = 60;
-	pad = 12;
-
-	x = 320;
+	x = 0.5 * cgs.screenWidth;
 	y = 425;
 
 	i = cg.forcepowerSelect - 1;
@@ -3471,7 +3511,7 @@ void CG_DrawForceSelect( void )
 	if (cgi_SP_GetStringTextString( va("INGAME_%s",showPowersName[cg.forcepowerSelect]), text, sizeof(text) ))
 	{
 			int w = cgi_R_Font_StrLenPixels(text, cgs.media.qhFontSmall, 1.0f);
-			int x = ( SCREEN_WIDTH - w ) / 2;
+			int x = ( cgs.screenWidth - w ) / 2;
 			cgi_R_Font_DrawString(x, (SCREEN_HEIGHT - 24), text, colorTable[CT_ICON_BLUE], cgs.media.qhFontSmall, -1, 1.0f);
 	}
 }

@@ -198,6 +198,7 @@ Ghoul2 Insert End
 
 	CG_OPENJK_MENU_PAINT,
 	CG_OPENJK_GETMENU_BYNAME,
+	CG_MVAPI_SETVIRTUALSCREEN,
 } cgameImport_t;
 
 //----------------------------------------------

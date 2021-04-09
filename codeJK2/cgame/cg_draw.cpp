@@ -66,6 +66,7 @@ CG_Draw3DModel
 static void CG_Draw3DModel( float x, float y, float w, float h, qhandle_t model, qhandle_t skin, vec3_t origin, vec3_t angles ) {
 	refdef_t		refdef;
 	refEntity_t		ent;
+	float			xScale, yScale;
 
 	memset( &refdef, 0, sizeof( refdef ) );
 
@@ -83,10 +84,12 @@ static void CG_Draw3DModel( float x, float y, float w, float h, qhandle_t model,
 	refdef.fov_x = 30;
 	refdef.fov_y = 30;
 
-	refdef.x = x;
-	refdef.y = y;
-	refdef.width = w;
-	refdef.height = h;
+	xScale = (float)cgs.glconfig.vidWidth / cgs.screenWidth;
+	yScale = (float)cgs.glconfig.vidHeight / SCREEN_HEIGHT;
+	refdef.x = x * xScale;
+	refdef.y = y * yScale;
+	refdef.width = w * xScale;
+	refdef.height = h * yScale;
 
 	refdef.time = cg.time;
 
@@ -224,7 +227,7 @@ int cgi_UI_GetMenuInfo(char *menuFile,int *x,int *y);
 CG_DrawHUDRightFrame1
 ================
 */
-static void CG_DrawHUDRightFrame1(int x,int y)
+static void CG_DrawHUDRightFrame1(float x,float y)
 {
 	cgi_R_SetColor( colorTable[CT_WHITE] );
 	// Inner gray wire frame
@@ -236,7 +239,7 @@ static void CG_DrawHUDRightFrame1(int x,int y)
 CG_DrawHUDRightFrame2
 ================
 */
-static void CG_DrawHUDRightFrame2(int x,int y)
+static void CG_DrawHUDRightFrame2(float x,float y)
 {
 	cgi_R_SetColor( colorTable[CT_WHITE] );
 	CG_DrawPic(   x, y, 80, 80, cgs.media.HUDRightFrame );		// Metal frame
@@ -280,7 +283,7 @@ static void CG_DrawMessageLit(centity_t *cent,int x,int y)
 CG_DrawForcePower
 ================
 */
-static void CG_DrawForcePower(centity_t *cent,int x,int y)
+static void CG_DrawForcePower(centity_t *cent, float x, float y)
 {
 	int			i;
 	vec4_t		calcColor;
@@ -341,7 +344,7 @@ static void CG_DrawForcePower(centity_t *cent,int x,int y)
 CG_DrawAmmo
 ================
 */
-static void CG_DrawAmmo(centity_t	*cent,int x,int y)
+static void CG_DrawAmmo(centity_t *cent, float x, float y)
 {
 	playerState_t	*ps;
 	int			numColor_i;
@@ -747,7 +750,7 @@ extern void *cgi_UI_GetMenuByName( const char *menu );
 extern void cgi_UI_Menu_Paint( void *menu, qboolean force );
 static void CG_DrawHUD( centity_t *cent )
 {
-	int x,y,value;
+	int x=cgs.screenWidth,y,value;
 	
 	if (cgi_UI_GetMenuInfo("lefthud",&x,&y))
 	{
@@ -1041,6 +1044,8 @@ static void CG_DrawZoomMask( void )
 	//--------------------------------
 	else if ( cg.zoomMode == 2 )
 	{
+		float xOffset = 0.5f * (cgs.screenWidth - 640);
+
 		level = (float)(80.0f - cg_zoomFov) / 80.0f;
 
 		// ...so we'll clamp it
@@ -1057,8 +1062,12 @@ static void CG_DrawZoomMask( void )
 		level *= 103.0f;
 
 		// Draw target mask
+		CG_FillRect(0, 0, xOffset, 480, colorTable[CT_BLACK]);
+		CG_FillRect(xOffset + 640, 0, xOffset, 480, colorTable[CT_BLACK]);
+
+
 		cgi_R_SetColor( colorTable[CT_WHITE] );
-		CG_DrawPic( 0, 0, 640, 480, cgs.media.disruptorMask );
+		CG_DrawPic( xOffset, 0, 640, 480, cgs.media.disruptorMask );
 
 		// apparently 99.0f is the full zoom level
 		if ( level >= 99 )
@@ -1073,7 +1082,7 @@ static void CG_DrawZoomMask( void )
 		}
 
 		// Draw rotating insert
-		CG_DrawRotatePic2( 320, 240, 640, 480, -level, cgs.media.disruptorInsert );
+		CG_DrawRotatePic2( 0.5f * cgs.screenWidth, 240, 640, 480, -level, cgs.media.disruptorInsert );
 
 		float cx, cy;
 		float max;
@@ -1115,7 +1124,7 @@ static void CG_DrawZoomMask( void )
 			cx = 320 + sin( (i+90.0f)/57.296f ) * 190;
 			cy = 240 + cos( (i+90.0f)/57.296f ) * 190;
 
-			CG_DrawRotatePic2( cx, cy, 12, 24, 90 - i, cgs.media.disruptorInsertTick );
+			CG_DrawRotatePic2( xOffset + cx, cy, 12, 24, 90 - i, cgs.media.disruptorInsertTick );
 		}
 
 		// FIXME: doesn't know about ammo!! which is bad because it draws charge beyond what ammo you may have..
@@ -1131,7 +1140,7 @@ static void CG_DrawZoomMask( void )
 				max = 1.0f;
 			}
 
-			CG_DrawPic2( 257, 435, 134 * max, 34, 0,0,max,1,cgi_R_RegisterShaderNoMip( "gfx/2d/crop_charge" ));
+			CG_DrawPic2( xOffset + 257, 435, 134 * max, 34, 0,0,max,1,cgi_R_RegisterShaderNoMip( "gfx/2d/crop_charge" ));
 		}
 	}
 	//-----------
@@ -1504,13 +1513,11 @@ static void CG_DrawCrosshair( vec3_t worldPoint )
 			cgi_R_SetColor( NULL );
 			return;
 		}
-		x -= 320;//????
-		y -= 240;//????
 	}
 	else
 	{
-		x = cg_crosshairX.integer;
-		y = cg_crosshairY.integer;
+		x = 0.5f * (cgs.screenWidth - w) + cg_crosshairX.value;
+		y = 0.5f * (SCREEN_HEIGHT - h) + cg_crosshairY.value;
 	}
 
 	if ( cg.snap->ps.viewEntity > 0 && cg.snap->ps.viewEntity < ENTITYNUM_WORLD )
@@ -1528,9 +1535,9 @@ static void CG_DrawCrosshair( vec3_t worldPoint )
 	{
 		hShader = cgs.media.crosshairShader[ cg_drawCrosshair.integer % NUM_CROSSHAIRS ];
 
-		cgi_R_DrawStretchPic( x + cg.refdef.x + 0.5 * (640 - w), 
-			y + cg.refdef.y + 0.5 * (480 - h), 
-			w, h, 0, 0, 1, 1, hShader );	
+		CG_DrawPic(x + cg.refdef.x - 0.5f * w, y + cg.refdef.y - 0.5f * w, w, h, hShader);
+
+		
 	}
 
 	if ( cg.forceCrosshairStartTime && cg_crosshairForceHint.integer ) // drawing extra bits
@@ -1543,10 +1550,7 @@ static void CG_DrawCrosshair( vec3_t worldPoint )
 		w *= 2.0f;
 		h *= 2.0f;
 
-		cgi_R_DrawStretchPic( x + cg.refdef.x + 0.5f * ( 640 - w ), y + cg.refdef.y + 0.5f * ( 480 - h ), 
-								w, h, 
-								0, 0, 1, 1, 
-								cgs.media.forceCoronaShader ); 
+		CG_DrawPic(x + cg.refdef.x + 0.5f * w, y + cg.refdef.y + 0.5f * w, w, h, cgs.media.forceCoronaShader);
 	}
 
 	cgi_R_SetColor( NULL );
@@ -1569,8 +1573,8 @@ qboolean CG_WorldCoordToScreenCoordFloat(vec3_t worldCoord, float *x, float *y)
 
     VectorSubtract(worldCoord, cg.refdef.vieworg, trans);
 
-    xc = 640 / 2.0;
-    yc = 480 / 2.0;
+    xc = 0.5f * cgs.screenWidth;
+    yc = 0.5f * SCREEN_HEIGHT;
 
 	// z = how far is the object in our forward direction
     z = DotProduct(trans, cg.refdef.viewaxis[0]);
@@ -2099,7 +2103,7 @@ static float CG_DrawSnapshot( float y ) {
 		cg.latestSnapshotNum, cgs.serverCommandSequence );
 
 	w = cgi_R_Font_StrLenPixels(s, cgs.media.qhFontMedium, 1.0f);	
-	cgi_R_Font_DrawString(635 - w, y+2, s, colorTable[CT_LTGOLD1], cgs.media.qhFontMedium, -1, 1.0f);
+	cgi_R_Font_DrawString(cgs.screenWidth - 5 - w, y+2, s, colorTable[CT_LTGOLD1], cgs.media.qhFontMedium, -1, 1.0f);
 
 	return y + BIGCHAR_HEIGHT + 10;
 }
@@ -2142,7 +2146,7 @@ static float CG_DrawFPS( float y ) {
 
 	s = va( "%ifps", fps );
 	const int w = cgi_R_Font_StrLenPixels(s, cgs.media.qhFontMedium, 1.0f);	
-	cgi_R_Font_DrawString(635 - w, y+2, s, colorTable[CT_LTGOLD1], cgs.media.qhFontMedium, -1, 1.0f);
+	cgi_R_Font_DrawString(cgs.screenWidth - 5 - w, y+2, s, colorTable[CT_LTGOLD1], cgs.media.qhFontMedium, -1, 1.0f);
 
 	return y + BIGCHAR_HEIGHT + 10;
 }
@@ -2166,7 +2170,7 @@ static float CG_DrawTimer( float y ) {
 	s = va( "%i:%i%i", mins, tens, seconds );
 
 	w = cgi_R_Font_StrLenPixels(s, cgs.media.qhFontMedium, 1.0f);	
-	cgi_R_Font_DrawString(635 - w, y+2, s, colorTable[CT_LTGOLD1], cgs.media.qhFontMedium, -1, 1.0f);
+	cgi_R_Font_DrawString(cgs.screenWidth - 5 - w, y+2, s, colorTable[CT_LTGOLD1], cgs.media.qhFontMedium, -1, 1.0f);
 
 	return y + BIGCHAR_HEIGHT + 10;
 }
@@ -2202,7 +2206,7 @@ static void CG_DrawAmmoWarning( void ) {
 	}
 
 	w = cgi_R_Font_StrLenPixels(text, cgs.media.qhFontSmall, 1.0f);	
-	cgi_R_Font_DrawString(320 - w/2, 64, text, colorTable[CT_LTGOLD1], cgs.media.qhFontSmall, -1, 1.0f);
+	cgi_R_Font_DrawString(0.5f * (cgs.screenWidth - w), 64, text, colorTable[CT_LTGOLD1], cgs.media.qhFontSmall, -1, 1.0f);
 }
 
 //---------------------------------------

@@ -356,9 +356,12 @@ static void CG_LoadBar(void)
 	const int numticks = 9, tickwidth = 40, tickheight = 8;
 	const int tickpadx = 20, tickpady = 12;
 	const int capwidth = 8;
-	const int barwidth = numticks*tickwidth+tickpadx*2+capwidth*2, barleft = ((640-barwidth)/2);
+	const float barwidth = numticks * tickwidth + tickpadx * 2 + capwidth * 2;
+	const float barleft = 0.5f * (cgs.screenWidth - barwidth);
 	const int barheight = tickheight + tickpady*2, bartop = 480-barheight;
-	const int capleft = barleft+tickpadx, tickleft = capleft+capwidth, ticktop = bartop+tickpady;
+	const float capleft = barleft + tickpadx;
+	const float tickleft = capleft + capwidth;
+	const float ticktop = bartop + tickpady;
 
 	cgi_R_SetColor( colorTable[CT_WHITE]);
 	// Draw background
@@ -384,6 +387,7 @@ overylays UI_DrawConnectText from ui_connect.cpp
 */
 void CG_DrawInformation( void ) {
 	int			y;
+	const float x = 0.5f * cgs.screenWidth;
 
 
 	// draw the dialog background
@@ -414,7 +418,7 @@ void CG_DrawInformation( void ) {
 		// put up the pre-defined levelshot for this map...
 		//
 		cgi_R_SetColor( NULL );
-		CG_DrawPic( 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, levelshot );
+		CG_DrawPic( 0, 0, cgs.screenWidth, SCREEN_HEIGHT, levelshot );
 	}
 
 	if ( g_eSavedGameJustLoaded != eFULL && !strcmp(s,"kejim_post") )//special case for first map!
@@ -423,7 +427,7 @@ void CG_DrawInformation( void ) {
 		cgi_SP_GetStringTextString( "INGAME_ALONGTIME", text, sizeof(text) );
 
 		int w = cgi_R_Font_StrLenPixels(text,cgs.media.qhFontMedium, 1.0f);
-		cgi_R_Font_DrawString((320)-(w/2), 140, text,  colorTable[CT_ICON_BLUE], cgs.media.qhFontMedium, -1, 1.0f);
+		cgi_R_Font_DrawString((x)-(w/2), 140, text,  colorTable[CT_ICON_BLUE], cgs.media.qhFontMedium, -1, 1.0f);
 	}
 	else
 	if (cg_missionstatusscreen.integer )

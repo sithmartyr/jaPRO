@@ -789,11 +789,25 @@ Ghoul2 Insert End
 		case CG_OPENJK_GETMENU_BYNAME_JK2:
 			return CG_OPENJK_GETMENU_BYNAME;
 			break;
+		case CG_MVAPI_SETVIRTUALSCREEN_JK2:
+			return CG_MVAPI_SETVIRTUALSCREEN;
+			break;
 	}
 	return (cgameImport_t)-1;
 }
 
 #endif
+
+/*
+====================
+CL_CgameSetVirtualScreen
+====================
+*/
+void CL_CgameSetVirtualScreen(float w, float h) {
+	cls.cgxadj = SCREEN_WIDTH / w;
+	cls.cgyadj = SCREEN_HEIGHT / h;
+}
+
 /*
 ====================
 CL_CgameSystemCalls
@@ -1195,6 +1209,10 @@ Ghoul2 Insert End
 
 	case CG_OPENJK_GETMENU_BYNAME:
 		return (intptr_t)Menus_FindByName( (const char *)VMA(1) );
+
+	case CG_MVAPI_SETVIRTUALSCREEN:
+		CL_CgameSetVirtualScreen(VMF(1), VMF(2));
+		return 0;
 
 	case CG_UI_STRING_INIT:
 		String_Init();

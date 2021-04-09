@@ -1302,7 +1302,8 @@ CG_DrawIconBackground
 void CG_DrawIconBackground(void)
 {
 	int				height,xAdd,x2,y2,t;
-	int				prongLeftX,prongRightX;
+	float			prongLeftX, prongRightX;
+	float			prongWidth;
 	qhandle_t		background;
 
 	if (( cg.zoomMode != 0 ) || !( cg_drawHUD.integer ))
@@ -1321,8 +1322,9 @@ void CG_DrawIconBackground(void)
 		return;
 	}
 
-	prongLeftX =x2+37;
-	prongRightX =x2+544;
+	prongLeftX = x2 + 37;
+	prongRightX = cgs.screenWidth - x2 - 37 + 1;
+	prongWidth = cgs.screenWidth - 2 * (x2 + 60);
 
 	if (((cg.inventorySelectTime+WEAPON_SELECT_TIME)>cg.time) || (cgs.media.currentBackground == ICON_INVENTORY))	// Display inventory background?
 	{
@@ -1354,8 +1356,8 @@ void CG_DrawIconBackground(void)
 			xAdd = (int) 8*cg.iconHUDPercent;
 
 			height = (int) (60.0f*cg.iconHUDPercent);
-			CG_DrawPic( x2+60, y2+30, 460, -height, background);	// Top half
-			CG_DrawPic( x2+60, y2+30-2,460, height, background);	// Bottom half
+			CG_DrawPic(x2 + 60, y2 + 30, prongWidth, -height, background);	// Top half
+			CG_DrawPic(x2 + 60, y2 + 30 - 2, prongWidth, height, background);	// Bottom half
 
 		}
 		else
@@ -1369,9 +1371,6 @@ void CG_DrawIconBackground(void)
 
 		return;
 	}
-
-	prongLeftX =x2+37;
-	prongRightX =x2+544;
 
 	if (!cg.iconHUDActive)
 	{
@@ -1396,8 +1395,8 @@ void CG_DrawIconBackground(void)
 
 	cgi_R_SetColor( colorTable[CT_WHITE] );
 	height = (int) (60.0f*cg.iconHUDPercent);
-	CG_DrawPic( x2+60, y2+30, 460, -height, background);	// Top half
-	CG_DrawPic( x2+60, y2+30-2,460, height, background);	// Bottom half
+	CG_DrawPic( x2+60, y2+30, prongWidth, -height, background);	// Top half
+	CG_DrawPic( x2+60, y2+30-2, prongWidth, height, background);	// Bottom half
 
 
 	// And now for the prongs
@@ -1813,8 +1812,9 @@ void CG_DrawWeaponSelect( void )
 	int		i;
 	int		bits;
 	int		count;
-	int		smallIconSize,bigIconSize;
-	int		holdX,x,y,x2,y2,pad;
+	float	smallIconSize, bigIconSize;
+	float	holdX, x, y, pad;
+	int		x2, y2;
 	int		sideLeftIconCnt,sideRightIconCnt;
 	int		sideMax,holdCount,iconCnt;
 	//int		height;
@@ -1860,6 +1860,12 @@ void CG_DrawWeaponSelect( void )
 	}
 
 	sideMax = 3;	// Max number of icons on the side
+	smallIconSize = 40;
+	bigIconSize = 80;
+	pad = 12;
+
+	// Max number of icons on the side
+	sideMax = (cgs.screenWidth - 240 - bigIconSize) / (smallIconSize + pad) / 2;
 
 	// Calculate how many icons will appear to either side of the center one
 	holdCount = count - 1;	// -1 for the center icon
@@ -1885,11 +1891,7 @@ void CG_DrawWeaponSelect( void )
 		i = 13;
 	}
 
-	smallIconSize = 40;
-	bigIconSize = 80;
-	pad = 12;
-
-	x = 320;
+	x = 0.5f * cgs.screenWidth;
 	y = 410;
 
 	// Background
@@ -2010,7 +2012,7 @@ void CG_DrawWeaponSelect( void )
 		if ( cgi_SP_GetStringTextString( va("INGAME_%s",item->classname), text, sizeof( text )))
 		{
 			int w = cgi_R_Font_StrLenPixels(text, cgs.media.qhFontSmall, 1.0f);
-			int x = ( SCREEN_WIDTH - w ) / 2;
+			int x = ( cgs.screenWidth - w ) / 2;
 			cgi_R_Font_DrawString(x, (SCREEN_HEIGHT - 24), text, textColor, cgs.media.qhFontSmall, -1, 1.0f);
 		}
 	}

@@ -3618,7 +3618,6 @@ _UI_DrawSides
 */
 void _UI_DrawSides(float x, float y, float w, float h, float size)
 {
-	size *= uiInfo.uiDC.xscale;
 	trap_R_DrawStretchPic( x, y, size, h, 0, 0, 0, 0, uiInfo.uiDC.whiteShader );
 	trap_R_DrawStretchPic( x + w - size, y, size, h, 0, 0, 0, 0, uiInfo.uiDC.whiteShader );
 }
@@ -3630,7 +3629,6 @@ _UI_DrawTopBottom
 */
 void _UI_DrawTopBottom(float x, float y, float w, float h, float size)
 {
-	size *= uiInfo.uiDC.yscale;
 	trap_R_DrawStretchPic( x, y, w, size, 0, 0, 0, 0, uiInfo.uiDC.whiteShader );
 	trap_R_DrawStretchPic( x, y + h - size, w, size, 0, 0, 0, 0, uiInfo.uiDC.whiteShader );
 }

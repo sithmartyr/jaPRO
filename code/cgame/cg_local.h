@@ -616,6 +616,9 @@ extern	vmCvar_t		cg_roffval2;
 extern	vmCvar_t		cg_roffval3;
 extern	vmCvar_t		cg_roffval4;
 #endif
+
+extern	vmCvar_t		cg_widescreen;
+
 extern	vmCvar_t		cg_thirdPerson;
 extern	vmCvar_t		cg_thirdPersonRange;
 extern	vmCvar_t		cg_thirdPersonMaxRange;

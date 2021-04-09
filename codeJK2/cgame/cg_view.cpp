@@ -1260,9 +1260,23 @@ qboolean CG_CalcFOVFromX( float fov_x )
 		fov_x = atan( tan( desiredFov*M_PI / 360.0f ) * baseAspect*aspect )*360.0f / M_PI;
 	}
 
-	x = cg.refdef.width / tan( fov_x / 360 * M_PI );
-	fov_y = atan2( cg.refdef.height, x );
-	fov_y = fov_y * 360 / M_PI;
+	// don't allow without cg_widescreen so people don't use it to
+	// stretch disruptor zoom mask
+	if (cg_widescreen.integer && cg_fovAspectAdjust.integer &&
+		cg.refdef.width * 3 > cg.refdef.height * 4)
+	{
+		// 4:3 screen with fov_x must fit INTO widescreen
+		float width = cg.refdef.height * (4.0f / 3.0f);
+
+		x = width / tan(DEG2RAD(0.5f * fov_x));
+		fov_x = RAD2DEG(2 * atan2(cg.refdef.width, x));
+		fov_y = RAD2DEG(2 * atan2(cg.refdef.height, x));
+	}
+	else
+	{
+		x = cg.refdef.width / tan(DEG2RAD(0.5f * fov_x));
+		fov_y = RAD2DEG(2 * atan2(cg.refdef.height, x));
+	}
 
 	// there's a problem with this, it only takes the leafbrushes into account, not the entity brushes,
 	//	so if you give slime/water etc properties to a func_door area brush in order to move the whole water 

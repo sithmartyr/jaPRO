@@ -328,6 +328,9 @@ typedef struct
 typedef struct {
 	gameState_t		gameState;			// gamestate from server
 	glconfig_t		glconfig;			// rendering configuration
+	float			screenWidth;		// virtual screen width (originally 640)
+	float			screenXFactor;		// 640 / screenWidth (for calculations)
+	float			screenXFactorInv;	// screenWidth / 640
 
 	int				serverCommandSequence;	// reliable command stream counter
 
