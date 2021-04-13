@@ -33,8 +33,7 @@ void CG_DrawIconBackground(void);
 void CG_DrawMissionInformation( void );
 void CG_DrawInventorySelect( void );
 void CG_DrawForceSelect( void );
-qboolean CG_WorldCoordToScreenCoord(vec3_t worldCoord, int *x, int *y);
-qboolean CG_WorldCoordToScreenCoordFloat(vec3_t worldCoord, float *x, float *y);
+qboolean CG_WorldCoordToScreenCoord(vec3_t worldCoord, float *x, float *y);
 extern float g_crosshairEntDist;
 extern int g_crosshairSameEntTime;
 extern int g_crosshairEntNum;
@@ -478,7 +477,7 @@ static void CG_DrawAmmo(centity_t *cent, float x, float y)
 CG_DrawHUDLeftFrame1
 ================
 */
-static void CG_DrawHUDLeftFrame1(int x,int y)
+static void CG_DrawHUDLeftFrame1(float x, float y)
 {
 	// Inner gray wire frame
 	cgi_R_SetColor( colorTable[CT_WHITE] );
@@ -490,7 +489,7 @@ static void CG_DrawHUDLeftFrame1(int x,int y)
 CG_DrawHUDLeftFrame2
 ================
 */
-static void CG_DrawHUDLeftFrame2(int x,int y)
+static void CG_DrawHUDLeftFrame2(float x, float y)
 {
 	// Inner gray wire frame
 	cgi_R_SetColor( colorTable[CT_WHITE] );
@@ -501,7 +500,7 @@ static void CG_DrawHUDLeftFrame2(int x,int y)
 CG_DrawHealth
 ================
 */
-static void CG_DrawHealth(int x,int y)
+static void CG_DrawHealth(float x, float y)
 {
 	vec4_t calcColor;
 	float	healthPercent;
@@ -535,7 +534,7 @@ static void CG_DrawHealth(int x,int y)
 CG_DrawArmor
 ================
 */
-static void CG_DrawArmor(int x,int y)
+static void CG_DrawArmor(float x, float y)
 {
 	vec4_t calcColor;
 	float	armorPercent,hold;
@@ -1512,7 +1511,7 @@ static void CG_DrawCrosshair( vec3_t worldPoint )
 
 	if ( worldPoint && VectorLength( worldPoint ) )
 	{
-		if ( !CG_WorldCoordToScreenCoordFloat( worldPoint, &x, &y ) )
+		if ( !CG_WorldCoordToScreenCoord( worldPoint, &x, &y ) )
 		{//off screen, don't draw it
 			cgi_R_SetColor( NULL );
 			return;
@@ -1558,49 +1557,6 @@ static void CG_DrawCrosshair( vec3_t worldPoint )
 	}
 
 	cgi_R_SetColor( NULL );
-}
-
-/*
-qboolean CG_WorldCoordToScreenCoord(vec3_t worldCoord, int *x, int *y)
-
-  Take any world coord and convert it to a 2D virtual 640x480 screen coord
-*/
-qboolean CG_WorldCoordToScreenCoordFloat(vec3_t worldCoord, float *x, float *y)
-{
-    vec3_t trans;
-    float xc, yc;
-    float px, py;
-    float z;
-
-    px = tan(cg.refdef.fov_x * (M_PI / 360) );
-    py = tan(cg.refdef.fov_y * (M_PI / 360) );
-
-    VectorSubtract(worldCoord, cg.refdef.vieworg, trans);
-
-    xc = 0.5f * cgs.screenWidth;
-    yc = 0.5f * SCREEN_HEIGHT;
-
-	// z = how far is the object in our forward direction
-    z = DotProduct(trans, cg.refdef.viewaxis[0]);
-    if (z <= 0.001)
-        return qfalse;
-
-    *x = xc - DotProduct(trans, cg.refdef.viewaxis[1])*xc/(z*px);
-    *y = yc - DotProduct(trans, cg.refdef.viewaxis[2])*yc/(z*py);
-
-    return qtrue;
-}
-
-qboolean CG_WorldCoordToScreenCoord( vec3_t worldCoord, int *x, int *y ) {
-	float xF, yF;
-
-	if ( CG_WorldCoordToScreenCoordFloat( worldCoord, &xF, &yF ) ) {
-		*x = (int)xF;
-		*y = (int)yF;
-		return qtrue;
-	}
-
-	return qfalse;
 }
 
 // I'm keeping the rocket tracking code separate for now since I may want to do different logic...but it still uses trace info from scanCrosshairEnt
@@ -1964,7 +1920,7 @@ static void CG_DrawRocketLocking( int lockEntNum, int lockTime )
 		return;
 	}
 
-	int		cx, cy;
+	float		cx, cy;
 	vec3_t	org;
 	static	int oldDif = 0;
 

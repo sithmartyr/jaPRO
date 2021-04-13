@@ -1521,7 +1521,7 @@ CG_SaberClashFlare
 */
 extern int g_saberFlashTime;
 extern vec3_t g_saberFlashPos;
-extern qboolean CG_WorldCoordToScreenCoord(vec3_t worldCoord, int *x, int *y);
+extern qboolean CG_WorldCoordToScreenCoord(vec3_t worldCoord, float *x, float *y);
 void CG_SaberClashFlare( void ) 
 {
 	int				t, maxTime = 150;
@@ -1553,7 +1553,7 @@ void CG_SaberClashFlare( void )
 	}
 
 	vec3_t color;
-	int x,y;
+	float x,y;
 	float v, len = VectorNormalize( dif );
 
 	// clamp to a known range
