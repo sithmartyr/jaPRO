@@ -658,6 +658,8 @@ void CG_UpdateCvars( void );
 int CG_CrosshairPlayer( void );
 void CG_LoadMenus(const char *menuFile);
 
+void CG_WideScreenMode(qboolean on);
+
 //
 // cg_view.c
 //
@@ -1157,6 +1159,7 @@ e_status trap_CIN_StopCinematic(int handle);
 e_status trap_CIN_RunCinematic (int handle);
 void	trap_CIN_DrawCinematic (int handle);
 void	trap_CIN_SetExtents (int handle, int x, int y, int w, int h);
+void	trap_MVAPI_SetVirtualScreen(float w, float h);
 void	*cgi_Z_Malloc( int size, int tag );
 void	cgi_Z_Free( void *ptr );
 

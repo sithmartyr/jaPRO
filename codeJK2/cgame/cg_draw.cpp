@@ -1559,6 +1559,32 @@ static void CG_DrawCrosshair( vec3_t worldPoint )
 	cgi_R_SetColor( NULL );
 }
 
+qboolean CG_WorldCoordToScreenCoord(vec3_t worldCoord, float* x, float* y)
+{
+	vec3_t trans;
+	float xc, yc;
+	float px, py;
+	float z;
+
+	px = tan(cg.refdef.fov_x * (M_PI / 360));
+	py = tan(cg.refdef.fov_y * (M_PI / 360));
+
+	VectorSubtract(worldCoord, cg.refdef.vieworg, trans);
+
+	xc = 0.5f * cgs.screenWidth;
+	yc = 0.5f * SCREEN_HEIGHT;
+
+	// z = how far is the object in our forward direction
+	z = DotProduct(trans, cg.refdef.viewaxis[0]);
+	if (z <= 0.001)
+		return qfalse;
+
+	*x = xc - DotProduct(trans, cg.refdef.viewaxis[1]) * xc / (z * px);
+	*y = yc - DotProduct(trans, cg.refdef.viewaxis[2]) * yc / (z * py);
+
+	return qtrue;
+}
+
 // I'm keeping the rocket tracking code separate for now since I may want to do different logic...but it still uses trace info from scanCrosshairEnt
 //-----------------------------------------
 static void CG_ScanForRocketLock( void )
