@@ -964,6 +964,8 @@ static void CG_DrawZoomMask( void )
 		// Using a magic number to convert the zoom level to scale amount
 		level *= 162.0f;
 
+		CG_WideScreenMode(qfalse);
+
 		if ( power )
 		{
 			// draw blue tinted distortion mask, trying to make it as small as is necessary to fill in the viewable area
@@ -1027,6 +1029,8 @@ static void CG_DrawZoomMask( void )
 		{
 			flip = (qboolean)!flip;
 		}
+
+		CG_WideScreenMode(qtrue);
 
 		if ( power )
 		{
