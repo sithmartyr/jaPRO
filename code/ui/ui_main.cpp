@@ -642,8 +642,8 @@ void Text_Paint(float x, float y, float scale, vec4_t color, const char *text, i
 							color,	// paletteRGBA_c c
 							iStyleOR | iFontIndex,	// const int iFontHandle
 							!iMaxPixelWidth?-1:iMaxPixelWidth,	// iMaxPixelWidth (-1 = none)
-							scale	// const float scale = 1.0f
-							);
+							scale,	// const float scale = 1.0f
+							cls.uixadj, cls.uiyadj);
 }
 
 
@@ -669,7 +669,7 @@ void Text_PaintWithCursor(float x, float y, float scale, vec4_t color, const cha
 	strncpy(sTemp,text,iCopyCount);
 			sTemp[iCopyCount] = '\0';
 
-	int iNextXpos  = ui.R_Font_StrLenPixels(sTemp, iFontIndex, scale );
+	int iNextXpos  = ui.R_Font_StrLenPixels(sTemp, iFontIndex, scale, cls.uixadj, cls.uiyadj);
 
 	Text_Paint(x+iNextXpos, y, scale, color, va("%c",cursor), iMaxPixelWidth, style|ITEM_TEXTSTYLE_BLINK, iFontIndex);
 }
@@ -3855,7 +3855,7 @@ static void UI_OwnerDraw(float x, float y, float w, float h, float text_x, float
 #endif
 			if (levelshot)
 			{
-				ui.R_DrawStretchPic( x, y, w, h, 0, 0, 1, 1, levelshot );
+				ui.R_DrawStretchPic( x, y, w, h, 0, 0, 1, 1, levelshot, cls.uixadj, cls.uiyadj );
 			}
 			else
 			{
@@ -3868,8 +3868,8 @@ static void UI_OwnerDraw(float x, float y, float w, float h, float text_x, float
 									color,	// paletteRGBA_c c
 									iFontIndex,	// const int iFontHandle
 									w,//-1,		// iMaxPixelWidth (-1 = none)
-									scale	// const float scale = 1.0f
-									);
+									scale,	// const float scale = 1.0f
+									1, 1);
 			break;
 		case UI_PREVIEWCINEMATIC:
 			// FIXME BOB - make this work?
@@ -3930,7 +3930,7 @@ int Text_Width(const char *text, float scale, int iFontIndex)
 	{
 		iFontIndex = uiInfo.uiDC.Assets.qhMediumFont;
 	}
-	return ui.R_Font_StrLenPixels(text, iFontIndex, scale);
+	return ui.R_Font_StrLenPixels(text, iFontIndex, scale, cls.uixadj, cls.uiyadj);
 }
 
 /*
@@ -3990,7 +3990,7 @@ int Text_Height(const char *text, float scale, int iFontIndex)
 	{
 		iFontIndex = uiInfo.uiDC.Assets.qhMediumFont;
 	}
-	return ui.R_Font_HeightPixels(iFontIndex, scale);
+	return ui.R_Font_HeightPixels(iFontIndex, scale, cls.uixadj, cls.uiyadj);
 }
 
 

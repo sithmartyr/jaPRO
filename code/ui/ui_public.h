@@ -72,9 +72,9 @@ typedef struct {
 	qhandle_t	(*R_RegisterShaderNoMip)( const char *name );			// returns white if not found
 	qhandle_t	(*R_RegisterFont)( const char *name );			// returns 0 for bad font
 
-	int			(*R_Font_StrLenPixels)(const char *text, const int setIndex, const float scale );
-	int			(*R_Font_HeightPixels)(const int setIndex, const float scale );
-	void		(*R_Font_DrawString)(int ox, int oy, const char *text, const float *rgba, const int setIndex, int iMaxPixelWidth, const float scale );
+	int			(*R_Font_StrLenPixels)(const char *text, const int setIndex, const float scale, float xadjust, float yadjust );
+	int			(*R_Font_HeightPixels)(const int setIndex, const float scale, float xadjust, float yadjust );
+	void		(*R_Font_DrawString)(int ox, int oy, const char *text, const float *rgba, const int setIndex, int iMaxPixelWidth, const float scale, float xadjust, float yadjust );
 	int			(*R_Font_StrLenChars)(const char *text);
 	qboolean	(*Language_IsAsian) (void);
 	qboolean	(*Language_UsesSpaces) (void);
@@ -91,7 +91,7 @@ typedef struct {
 	void		(*R_ModelBounds)( qhandle_t handle, vec3_t mins, vec3_t maxs );
 
 	void		(*R_SetColor)( const float *rgba );	// NULL = 1,1,1,1
-	void		(*R_DrawStretchPic) ( float x, float y, float w, float h, float s1, float t1, float s2, float t2, qhandle_t hShader );	// 0 = white
+	void		(*R_DrawStretchPic) ( float x, float y, float w, float h, float s1, float t1, float s2, float t2, qhandle_t hShader, float xadjust, float yadjust );	// 0 = white
 	void		(*R_ScissorPic) ( float x, float y, float w, float h, float s1, float t1, float s2, float t2, qhandle_t hShader );	// 0 = white
 
 	// force a screen update, only used during gamestate load

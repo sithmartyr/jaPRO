@@ -325,7 +325,7 @@ void UI_DrawNamedPic( float x, float y, float width, float height, const char *p
 	qhandle_t	hShader;
 
 	hShader = ui.R_RegisterShaderNoMip( picname );
-	ui.R_DrawStretchPic( x, y, width, height, 0, 0, 1, 1, hShader );
+	ui.R_DrawStretchPic( x, y, width, height, 0, 0, 1, 1, hShader, cls.uixadj, cls.uiyadj );
 }
 
 
@@ -361,7 +361,7 @@ void UI_DrawHandlePic( float x, float y, float w, float h, qhandle_t hShader )
 		t1 = 1;
 	}
 
-	ui.R_DrawStretchPic( x, y, w, h, s0, t0, s1, t1, hShader );
+	ui.R_DrawStretchPic( x, y, w, h, s0, t0, s1, t1, hShader, cls.uixadj, cls.uiyadj );
 }
 
 /*
@@ -375,7 +375,7 @@ void UI_FillRect( float x, float y, float width, float height, const float *colo
 {
 	ui.R_SetColor( color );
 
-	ui.R_DrawStretchPic( x, y, width, height, 0, 0, 0, 0, uis.whiteShader );
+	ui.R_DrawStretchPic( x, y, width, height, 0, 0, 0, 0, uis.whiteShader, cls.uixadj, cls.uiyadj );
 
 	ui.R_SetColor( NULL );
 }

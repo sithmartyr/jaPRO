@@ -1461,7 +1461,7 @@ CFontInfo *GetFont(int index)
 }
 
 
-int RE_Font_StrLenPixels(const char *psText, const int iFontHandle, const float fScale)
+int RE_Font_StrLenPixels(const char *psText, const int iFontHandle, const float fScale, float xadjust, float yadjust)
 {
 #ifdef JK2_MODE
 	// Yes..even this func is a little different, to the point where it doesn't work. --eez
@@ -1598,7 +1598,7 @@ int RE_Font_StrLenChars(const char *psText)
 	return iCharCount;
 }
 
-int RE_Font_HeightPixels(const int iFontHandle, const float fScale)
+int RE_Font_HeightPixels(const int iFontHandle, const float fScale, float xadjust, float yadjust)
 {
 	CFontInfo	*curfont;
 
@@ -1613,7 +1613,7 @@ int RE_Font_HeightPixels(const int iFontHandle, const float fScale)
 
 // iMaxPixelWidth is -1 for "all of string", else pixel display count...
 //
-void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, const int iFontHandle, int iMaxPixelWidth, const float fScale)
+void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, const int iFontHandle, int iMaxPixelWidth, const float fScale, float xadjust, float yadjust)
 {
 	// HAAAAAAAAAAAAAAAX..fix me please --eez
 #ifdef JK2_MODE
@@ -1674,7 +1674,7 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 		const vec4_t v4DKGREY2 = {0.15f, 0.15f, 0.15f, rgba?rgba[3]:1.0f};
 
 		gbInShadow = qtrue;
-		RE_Font_DrawString(ox + offset, oy + offset, psText, v4DKGREY2, iFontHandle & SET_MASK, iMaxPixelWidth, fScale);
+		RE_Font_DrawString(ox + offset, oy + offset, psText, v4DKGREY2, iFontHandle & SET_MASK, iMaxPixelWidth, fScale, xadjust, yadjust);
 		gbInShadow = qfalse;
 	}
 
@@ -1753,8 +1753,8 @@ void RE_Font_DrawString(int ox, int oy, const char *psText, const float *rgba, c
 								pLetter->s2,					// float s2
 								pLetter->t2,					// float t2
 								//lastcolour.c,
-								hShader							// qhandle_t hShader
-								);
+								hShader,						// qhandle_t hShader
+								xadjust, yadjust);
 
 				fx += fAdvancePixels;
 			}

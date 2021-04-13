@@ -1745,6 +1745,7 @@ typedef struct {
 	float	s1, t1;
 	float	s2, t2;
 	float	a;
+	float	m[2][2];
 } rotatePicCommand_t;
 
 typedef struct
@@ -1809,11 +1810,11 @@ void R_AddDrawSurfCmd( drawSurf_t *drawSurfs, int numDrawSurfs );
 
 void RE_SetColor( const float *rgba );
 void RE_StretchPic ( float x, float y, float w, float h,
-					  float s1, float t1, float s2, float t2, qhandle_t hShader );
+					  float s1, float t1, float s2, float t2, qhandle_t hShader, float xadjust, float yadjust);
 void RE_RotatePic ( float x, float y, float w, float h,
-					  float s1, float t1, float s2, float t2,float a, qhandle_t hShader );
+					  float s1, float t1, float s2, float t2,float a, qhandle_t hShader, float xadjust, float yadjust );
 void RE_RotatePic2 ( float x, float y, float w, float h,
-					  float s1, float t1, float s2, float t2,float a, qhandle_t hShader );
+					  float s1, float t1, float s2, float t2,float a, qhandle_t hShader, float xadjust, float yadjust );
 void RE_RenderWorldEffects(void);
 void RE_LAGoggles( void );
 void RE_Scissor ( float x, float y, float w, float h);
