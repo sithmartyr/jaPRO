@@ -1519,8 +1519,8 @@ static void CG_DrawCrosshair( vec3_t worldPoint )
 	}
 	else
 	{
-		x = 0.5f * (cgs.screenWidth - w) + cg_crosshairX.value;
-		y = 0.5f * (SCREEN_HEIGHT - h) + cg_crosshairY.value;
+		x = 0.5f * cgs.screenWidth + cg_crosshairX.value;
+		y = 0.5f * SCREEN_HEIGHT + cg_crosshairY.value;
 	}
 
 	if ( cg.snap->ps.viewEntity > 0 && cg.snap->ps.viewEntity < ENTITYNUM_WORLD )
