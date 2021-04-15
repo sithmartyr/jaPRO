@@ -642,14 +642,17 @@ void Text_Paint(float x, float y, float scale, vec4_t color, const char *text, i
 	case  ITEM_TEXTSTYLE_SHADOWEDMORE:		iStyleOR = STYLE_DROPSHADOW;break;	// JK2 drop shadow ( need a color for this )
 	}
 
-	ui.R_Font_DrawString(	x,		// int ox
-							y,		// int oy
-							text,	// const char *text
-							color,	// paletteRGBA_c c
-							iStyleOR | iFontIndex,	// const int iFontHandle
-							!iMaxPixelWidth?-1:iMaxPixelWidth,	// iMaxPixelWidth (-1 = none)
-							scale,	// const float scale = 1.0f
-							cls.uixadj, cls.uiyadj);
+	UI_WideScreenMode(qtrue);
+	x *= uiInfo.uiDC.screenXFactorInv;
+	ui.R_Font_DrawString(x,						// int ox
+		y,						// int oy
+		text,					// const char *text
+		color,					// paletteRGBA_c c
+		iStyleOR | iFontIndex,	// const int iFontHandle
+		!iMaxPixelWidth ? -1 : iMaxPixelWidth,		// iCharLimit (-1 = none)
+		scale, cls.uixadj, cls.uiyadj);				// const float scale = 1.0f
+
+	UI_WideScreenMode(qfalse);
 }
 
 
@@ -675,7 +678,7 @@ void Text_PaintWithCursor(float x, float y, float scale, vec4_t color, const cha
 	strncpy(sTemp,text,iCopyCount);
 			sTemp[iCopyCount] = '\0';
 
-	int iNextXpos  = ui.R_Font_StrLenPixels(sTemp, iFontIndex, scale, cls.uixadj, cls.uiyadj);
+	int iNextXpos = Text_Width(sTemp, scale, iFontIndex);
 
 	Text_Paint(x+iNextXpos, y, scale, color, va("%c",cursor), iMaxPixelWidth, style|ITEM_TEXTSTYLE_BLINK, iFontIndex);
 }
@@ -3974,13 +3977,17 @@ Text_Width
 */
 int Text_Width(const char *text, float scale, int iFontIndex)
 {
+	float w;
 	// temp code until Bob retro-fits all menus to have font specifiers...
 	//
 	if ( iFontIndex == 0 )
 	{
 		iFontIndex = uiInfo.uiDC.Assets.qhMediumFont;
 	}
-	return ui.R_Font_StrLenPixels(text, iFontIndex, scale, cls.uixadj, cls.uiyadj);
+	UI_WideScreenMode(qtrue);
+	w = ui.R_Font_StrLenPixels(text, iFontIndex, scale, cls.uixadj, cls.uiyadj) * uiInfo.uiDC.screenXFactor;
+	UI_WideScreenMode(qfalse);
+	return w;
 }
 
 /*
@@ -4034,13 +4041,17 @@ Text_Height
 */
 int Text_Height(const char *text, float scale, int iFontIndex)
 {
+	float h;
 	// temp until Bob retro-fits all menu files with font specifiers...
 	//
 	if ( iFontIndex == 0 )
 	{
 		iFontIndex = uiInfo.uiDC.Assets.qhMediumFont;
 	}
-	return ui.R_Font_HeightPixels(iFontIndex, scale, cls.uixadj, cls.uiyadj);
+	UI_WideScreenMode(qtrue);
+	h = ui.R_Font_HeightPixels(iFontIndex, scale, cls.uixadj, cls.uiyadj);
+	UI_WideScreenMode(qfalse);
+	return h;
 }
 
 
