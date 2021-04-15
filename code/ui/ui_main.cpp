@@ -470,7 +470,7 @@ static cvarTable_t cvarTable[] =
 	{ &ui_PrecacheModels,		"ui_PrecacheModels",	"1", NULL, CVAR_ARCHIVE},
 
 	{ &ui_screenshotType,		"ui_screenshotType",	"jpg", UI_UpdateScreenshot, CVAR_ARCHIVE },
-	{ &ui_widescreen,			"cg_widescreen", "1", NULL, CVAR_LATCH }
+	{ &ui_widescreen,			"ui_widescreen", "1", NULL, CVAR_ARCHIVE | CVAR_LATCH }
 };
 
 #define FP_UPDATED_NONE -1
