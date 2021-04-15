@@ -151,3 +151,8 @@ int trap_CIN_StopCinematic(int handle)
 	return CIN_StopCinematic(handle);
 }
 
+void trap_MVAPI_SetVirtualScreen(float w, float h)
+{
+	//return Q_syscall(UI_MVAPI_SETVIRTUALSCREEN(w, h));
+	return ui.UI_SetVirtualScreen(w, h);
+}

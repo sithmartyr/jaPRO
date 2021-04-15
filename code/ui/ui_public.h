@@ -97,6 +97,8 @@ typedef struct {
 	// force a screen update, only used during gamestate load
 	void		(*UpdateScreen)( void );
 
+	void		(*UI_SetVirtualScreen)(float w, float h);
+
 #ifdef JK2_MODE
 	// stuff for savegame screenshots...
 	void		(*PrecacheScreenshot)( void );

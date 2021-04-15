@@ -194,6 +194,16 @@ void CL_DrawDatapad(int HUDType)
 
 }
 
+/*
+====================
+CL_UISetVirtualScreen
+====================
+*/
+void CL_UISetVirtualScreen(float w, float h) {
+	cls.uixadj = SCREEN_WIDTH / w;
+	cls.uiyadj = SCREEN_HEIGHT / h;
+}
+
 void UI_Init( int apiVersion, uiimport_t *uiimport, qboolean inGameLoad );
 
 /*
@@ -273,6 +283,7 @@ void CL_InitUI( void ) {
 	uii.R_SetColor				= re.SetColor;
 	uii.R_DrawStretchPic		= re.DrawStretchPic;
 	uii.UpdateScreen			= SCR_UpdateScreen;
+	uii.UI_SetVirtualScreen		= CL_UISetVirtualScreen;
 
 #ifdef JK2_MODE
 	uii.PrecacheScreenshot		= SCR_PrecacheScreenshot;

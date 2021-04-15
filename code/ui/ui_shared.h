@@ -234,8 +234,10 @@ typedef struct {
 	int			realTime;
 	int			frameTime;
 	qboolean	cursorShow;
-	int			cursorx;
-	int			cursory;
+	float		cursorx;
+	float		cursory;
+	float		screenWidth;
+	float		screenHeight;
 	qboolean	debug;
 
 	cachedAssets_t Assets;
@@ -246,6 +248,8 @@ typedef struct {
 	float FPS;
 
 	int			screenshotFormat;
+	float		screenXFactor;			// SCREEN_WIDTH / screenWidth
+	float		screenXFactorInv;		// screenWidth / SCREEN_WIDTH
 
 } displayContextDef_t;
 

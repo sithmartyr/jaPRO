@@ -406,6 +406,8 @@ vmCvar_t	ui_char_color_blue;
 vmCvar_t	ui_PrecacheModels;
 vmCvar_t	ui_screenshotType;
 
+vmCvar_t	ui_widescreen;
+
 static void UI_UpdateScreenshot( void )
 {
 	qboolean changed = qfalse;
@@ -467,7 +469,8 @@ static cvarTable_t cvarTable[] =
 
 	{ &ui_PrecacheModels,		"ui_PrecacheModels",	"1", NULL, CVAR_ARCHIVE},
 
-	{ &ui_screenshotType,		"ui_screenshotType",	"jpg", UI_UpdateScreenshot, CVAR_ARCHIVE }
+	{ &ui_screenshotType,		"ui_screenshotType",	"jpg", UI_UpdateScreenshot, CVAR_ARCHIVE },
+	{ &ui_widescreen,			"cg_widescreen", "1", NULL, CVAR_LATCH }
 };
 
 #define FP_UPDATED_NONE -1
@@ -477,6 +480,7 @@ static const size_t cvarTableSize = ARRAY_LEN( cvarTable );
 
 void Text_Paint(float x, float y, float scale, vec4_t color, const char *text, int iMaxPixelWidth, int style, int iFontIndex);
 int Key_GetCatcher( void );
+void UI_WideScreenMode(qboolean on);
 
 #define	UI_FPS_FRAMES	4
 void _UI_Refresh( int realtime )
@@ -541,7 +545,9 @@ void _UI_Refresh( int realtime )
 	{
 		if (uiInfo.uiDC.cursorShow == qtrue)
 		{
-			UI_DrawHandlePic( uiInfo.uiDC.cursorx, uiInfo.uiDC.cursory, 48, 48, uiInfo.uiDC.Assets.cursor);
+			UI_WideScreenMode(qtrue);
+			UI_DrawHandlePic(uiInfo.uiDC.cursorx * uiInfo.uiDC.screenXFactorInv, uiInfo.uiDC.cursory, 48, 48, uiInfo.uiDC.Assets.cursor);
+			UI_WideScreenMode(qfalse);
 		}
 	}
 }
@@ -813,6 +819,42 @@ qhandle_t UI_FeederItemImage(float feederID, int index)
 	}
 */
 	return 0;
+}
+
+/*
+===================
+UI_WideScreenMode
+Make 2D drawing functions use widescreen or 640x480 coordinates
+===================
+*/
+void UI_WideScreenMode(qboolean on) {
+	if (on) {
+		trap_MVAPI_SetVirtualScreen(uiInfo.uiDC.screenWidth, (float)SCREEN_HEIGHT);
+	}
+	else {
+		trap_MVAPI_SetVirtualScreen((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT);
+	}
+}
+
+/*
+=================
+UI_UpdateWidescreen
+=================
+*/
+extern vmCvar_t ui_widescreen;
+static void UI_UpdateWidescreen(void) {
+	if (ui_widescreen.integer) {
+		uiInfo.uiDC.screenWidth = (float)SCREEN_HEIGHT * uiInfo.uiDC.glconfig.vidWidth / uiInfo.uiDC.glconfig.vidHeight;
+	}
+	else {
+		uiInfo.uiDC.screenWidth = (float)SCREEN_WIDTH;
+	}
+	uiInfo.uiDC.screenXFactor = (float)SCREEN_WIDTH / uiInfo.uiDC.screenWidth;
+	uiInfo.uiDC.screenXFactorInv = uiInfo.uiDC.screenWidth / (float)SCREEN_WIDTH;
+
+	if (ui_widescreen.integer != 2)
+		trap_MVAPI_SetVirtualScreen(uiInfo.uiDC.screenWidth, (float)SCREEN_HEIGHT);
+		
 }
 
 
@@ -2651,6 +2693,8 @@ void _UI_Init( qboolean inGameLoad )
 	// cache redundant calulations
 	trap_GetGlconfig( &uiInfo.uiDC.glconfig );
 
+	UI_UpdateWidescreen();
+
 	// for 640x480 virtualized screen
 	uiInfo.uiDC.yscale = uiInfo.uiDC.glconfig.vidHeight * (1.0/480.0);
 	uiInfo.uiDC.xscale = uiInfo.uiDC.glconfig.vidWidth * (1.0/640.0);
@@ -2777,6 +2821,7 @@ void _UI_Init( qboolean inGameLoad )
 
 }
 
+int widescreenModificationCount = -1;
 /*
 =================
 UI_RegisterCvars
@@ -2792,6 +2837,7 @@ static void UI_RegisterCvars( void )
 		if ( cv->update )
 			cv->update();
 	}
+	widescreenModificationCount = ui_widescreen.modificationCount;
 }
 
 /*
@@ -3669,6 +3715,10 @@ void UI_UpdateCvars( void )
 			}
 		}
 	}
+	if (widescreenModificationCount != ui_widescreen.modificationCount) {
+		widescreenModificationCount = ui_widescreen.modificationCount;
+		UI_UpdateWidescreen();
+	}
 }
 
 /*
@@ -4003,7 +4053,7 @@ UI_MouseEvent
 void _UI_MouseEvent( int dx, int dy )
 {
 	// update mouse screen position
-	uiInfo.uiDC.cursorx += dx;
+	uiInfo.uiDC.cursorx += dx * uiInfo.uiDC.screenXFactor;
 	if (uiInfo.uiDC.cursorx < 0)
 	{
 		uiInfo.uiDC.cursorx = 0;
