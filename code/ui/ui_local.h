@@ -172,6 +172,11 @@ typedef struct {
 	itemDef_t*	runScriptItem;
 
 	qboolean inGameLoad;
+
+	float		screenWidth;
+	float		screenXFactor;
+	float		screenXFactorInv;
+
 	// Used by Force Power allocation screen
 	short	forcePowerUpdated;					// Enum of which power had the point allocated
 	// Used by Weapon allocation screen

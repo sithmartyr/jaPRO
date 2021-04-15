@@ -546,7 +546,7 @@ void _UI_Refresh( int realtime )
 		if (uiInfo.uiDC.cursorShow == qtrue)
 		{
 			UI_WideScreenMode(qtrue);
-			UI_DrawHandlePic(uiInfo.uiDC.cursorx * uiInfo.uiDC.screenXFactorInv, uiInfo.uiDC.cursory, 48, 48, uiInfo.uiDC.Assets.cursor);
+			UI_DrawHandlePic(uiInfo.uiDC.cursorx * uiInfo.screenXFactorInv, uiInfo.uiDC.cursory, 48, 48, uiInfo.uiDC.Assets.cursor);
 			UI_WideScreenMode(qfalse);
 		}
 	}
@@ -643,7 +643,7 @@ void Text_Paint(float x, float y, float scale, vec4_t color, const char *text, i
 	}
 
 	UI_WideScreenMode(qtrue);
-	x *= uiInfo.uiDC.screenXFactorInv;
+	x *= uiInfo.screenXFactorInv;
 	ui.R_Font_DrawString(x,						// int ox
 		y,						// int oy
 		text,					// const char *text
@@ -832,7 +832,7 @@ Make 2D drawing functions use widescreen or 640x480 coordinates
 */
 void UI_WideScreenMode(qboolean on) {
 	if (on) {
-		trap_MVAPI_SetVirtualScreen(uiInfo.uiDC.screenWidth, (float)SCREEN_HEIGHT);
+		trap_MVAPI_SetVirtualScreen(uiInfo.screenWidth, (float)SCREEN_HEIGHT);
 	}
 	else {
 		trap_MVAPI_SetVirtualScreen((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT);
@@ -847,16 +847,16 @@ UI_UpdateWidescreen
 extern vmCvar_t ui_widescreen;
 static void UI_UpdateWidescreen(void) {
 	if (ui_widescreen.integer) {
-		uiInfo.uiDC.screenWidth = (float)SCREEN_HEIGHT * uiInfo.uiDC.glconfig.vidWidth / uiInfo.uiDC.glconfig.vidHeight;
+		uiInfo.screenWidth = (float)SCREEN_HEIGHT * uiInfo.uiDC.glconfig.vidWidth / uiInfo.uiDC.glconfig.vidHeight;
 	}
 	else {
-		uiInfo.uiDC.screenWidth = (float)SCREEN_WIDTH;
+		uiInfo.screenWidth = (float)SCREEN_WIDTH;
 	}
-	uiInfo.uiDC.screenXFactor = (float)SCREEN_WIDTH / uiInfo.uiDC.screenWidth;
-	uiInfo.uiDC.screenXFactorInv = uiInfo.uiDC.screenWidth / (float)SCREEN_WIDTH;
+	uiInfo.screenXFactor = (float)SCREEN_WIDTH / uiInfo.screenWidth;
+	uiInfo.screenXFactorInv = uiInfo.screenWidth / (float)SCREEN_WIDTH;
 
 	if (ui_widescreen.integer != 2)
-		trap_MVAPI_SetVirtualScreen(uiInfo.uiDC.screenWidth, (float)SCREEN_HEIGHT);
+		trap_MVAPI_SetVirtualScreen(uiInfo.screenWidth, (float)SCREEN_HEIGHT);
 		
 }
 
@@ -3985,7 +3985,7 @@ int Text_Width(const char *text, float scale, int iFontIndex)
 		iFontIndex = uiInfo.uiDC.Assets.qhMediumFont;
 	}
 	UI_WideScreenMode(qtrue);
-	w = ui.R_Font_StrLenPixels(text, iFontIndex, scale, cls.uixadj, cls.uiyadj) * uiInfo.uiDC.screenXFactor;
+	w = ui.R_Font_StrLenPixels(text, iFontIndex, scale, cls.uixadj, cls.uiyadj) * uiInfo.screenXFactor;
 	UI_WideScreenMode(qfalse);
 	return w;
 }
@@ -4064,7 +4064,7 @@ UI_MouseEvent
 void _UI_MouseEvent( int dx, int dy )
 {
 	// update mouse screen position
-	uiInfo.uiDC.cursorx += dx * uiInfo.uiDC.screenXFactor;
+	uiInfo.uiDC.cursorx += dx * uiInfo.screenXFactor;
 	if (uiInfo.uiDC.cursorx < 0)
 	{
 		uiInfo.uiDC.cursorx = 0;
