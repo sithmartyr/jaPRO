@@ -480,7 +480,7 @@ void Con_DrawNotify (void)
 		{
 			int iFontIndex = re.RegisterFont("ocr_a");	// this seems naughty
 			const float fFontScale = 0.75f*con.yadjust;
-			const int iPixelHeightToAdvance =   2+(1.3/con.yadjust) * re.Font_HeightPixels(iFontIndex, fFontScale, con.xadjust, con.yadjust);	// for asian spacing, since we don't want glyphs to touch.
+			const int iPixelHeightToAdvance =   2+(1.3/con.yadjust) * re.Font_HeightPixels(iFontIndex, fFontScale, cls.uixadj, cls.uiyadj);	// for asian spacing, since we don't want glyphs to touch.
 			// concat the text to be printed...
 			//
 			char sTemp[4096]={0};	// ott
@@ -495,7 +495,7 @@ void Con_DrawNotify (void)
 			//
 			// and print...
 			//
-			re.Font_DrawString(con.xadjust*(con.xadjust + (1*SMALLCHAR_WIDTH/*aesthetics*/)), con.yadjust*(v), sTemp, g_color_table[currentColor], iFontIndex, -1, fFontScale, con.xadjust, con.yadjust);
+			re.Font_DrawString(con.xadjust*(con.xadjust + (1*SMALLCHAR_WIDTH/*aesthetics*/)), con.yadjust*(v), sTemp, g_color_table[currentColor], iFontIndex, -1, fFontScale, cls.uixadj, cls.uiyadj);
 
 			v +=  iPixelHeightToAdvance;
 		}
@@ -562,9 +562,8 @@ void Con_DrawSolidConsole( float frac )
 	}
 
 	// draw the bottom bar and version number
-
 	re.SetColor( console_color );
-	re.DrawStretchPic( 0, y, SCREEN_WIDTH, 2, 0, 0, 0, 0, cls.whiteShader, con.xadjust, con.yadjust );
+	re.DrawStretchPic( 0, y, SCREEN_WIDTH, 2, 0, 0, 0, 0, cls.whiteShader, cls.uixadj, cls.uiyadj );
 
 	i = strlen( Q3_VERSION );
 
@@ -609,7 +608,7 @@ void Con_DrawSolidConsole( float frac )
 		{
 			iFontIndexForAsian = re.RegisterFont("ocr_a");	// must be a font that's used elsewhere
 		}
-		iPixelHeightToAdvance =   (1.3/con.yadjust) * re.Font_HeightPixels(iFontIndexForAsian, fFontScaleForAsian, con.xadjust, con.yadjust);	// for asian spacing, since we don't want glyphs to touch.
+		iPixelHeightToAdvance =   (1.3/con.yadjust) * re.Font_HeightPixels(iFontIndexForAsian, fFontScaleForAsian, cls.uixadj, cls.uiyadj);	// for asian spacing, since we don't want glyphs to touch.
 	}
 
 	for (i=0 ; i<rows ; i++, y -= iPixelHeightToAdvance, row--)
@@ -644,7 +643,7 @@ void Con_DrawSolidConsole( float frac )
 			//
 			// and print...
 			//
-			re.Font_DrawString(con.xadjust*(con.xadjust + (1*SMALLCHAR_WIDTH/*(aesthetics)*/)), con.yadjust*(y), sTemp, g_color_table[currentColor], iFontIndexForAsian, -1, fFontScaleForAsian, con.xadjust, con.yadjust);
+			re.Font_DrawString(con.xadjust*(con.xadjust + (1*SMALLCHAR_WIDTH/*(aesthetics)*/)), con.yadjust*(y), sTemp, g_color_table[currentColor], iFontIndexForAsian, -1, fFontScaleForAsian, cls.uixadj, cls.uiyadj);
 		}
 		else
 		{

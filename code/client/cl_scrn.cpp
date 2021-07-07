@@ -66,7 +66,7 @@ Coordinates are 640*480 virtual values
 void SCR_FillRect( float x, float y, float width, float height, const float *color ) {
 	re.SetColor( color );
 
-	re.DrawStretchPic( x, y, width, height, 0, 0, 0, 0, cls.whiteShader, con.xadjust, con.yadjust );
+	re.DrawStretchPic( x, y, width, height, 0, 0, 0, 0, cls.whiteShader, cls.uixadj, cls.uiyadj );
 
 	re.SetColor( NULL );
 }
@@ -81,7 +81,7 @@ A width of 0 will draw with the original image width
 =================
 */
 void SCR_DrawPic( float x, float y, float width, float height, qhandle_t hShader ) {
-	re.DrawStretchPic( x, y, width, height, 0, 0, 1, 1, hShader, con.xadjust, con.yadjust);
+	re.DrawStretchPic( x, y, width, height, 0, 0, 1, 1, hShader, cls.uixadj, cls.uiyadj);
 }
 
 
@@ -132,7 +132,7 @@ void SCR_DrawBigChar( int x, int y, int ch ) {
 	re.DrawStretchPic( ax, ay, aw, ah,
 					   fcol, frow,
 					   fcol + size, frow + size2,
-					   cls.charSetShader, con.xadjust, con.yadjust );
+					   cls.charSetShader, cls.uixadj, cls.uiyadj );
 
 }
 
@@ -175,8 +175,8 @@ void SCR_DrawSmallChar( int x, int y, int ch ) {
 	size = 0.03125;
 	size2 = 0.0625;
 
-	re.DrawStretchPic( x * con.xadjust, y * con.yadjust,
-						SMALLCHAR_WIDTH * con.xadjust, SMALLCHAR_HEIGHT * con.yadjust,
+	re.DrawStretchPic( x * cls.uixadj, y * cls.uiyadj,
+						SMALLCHAR_WIDTH * cls.uixadj, SMALLCHAR_HEIGHT * cls.uiyadj,
 		fcol, frow,
 		fcol + size, frow + size2,
 		cls.charSetShader, con.xadjust, con.yadjust );

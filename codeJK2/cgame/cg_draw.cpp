@@ -769,34 +769,44 @@ static void CG_DrawHUD( centity_t *cent )
 		CG_DrawHUDLeftFrame2(x,y);
 	}
 
-	if (cgi_UI_GetMenuInfo("righthud",&x,&y))
+	if (cgi_UI_GetMenuInfo("righthud", &x, &y))
 	{
 		// Draw all the HUD elements --eez
-		cgi_UI_Menu_Paint( cgi_UI_GetMenuByName( "righthud" ), qtrue );
+		cgi_UI_Menu_Paint(cgi_UI_GetMenuByName("righthud"), qtrue);
 
 		// Draw armor & health values
-		if ( cg_draw2D.integer == 2 ) 
+		if (cg_draw2D.integer == 2)
 		{
-			if ( cent->currentState.weapon != WP_SABER && cent->currentState.weapon != WP_STUN_BATON && cent->gent )
+			if (cent->currentState.weapon != WP_SABER && cent->currentState.weapon != WP_STUN_BATON && cent->gent)
 			{
 				// Bob, just didn't want the ammo text drawing when the saber or the stun baton is the current weapon...change it back if this is wrong.
 				value = cg.snap->ps.ammo[weaponData[cent->currentState.weapon].ammoIndex];
-//				value = cent->gent->client->ps.forcePower;
-				CG_DrawSmallStringColor(x, y - 60,va("Ammo:%d",value), colorTable[CT_HUD_GREEN] );
+				//				value = cent->gent->client->ps.forcePower;
+				CG_DrawSmallStringColor(x, y - 60, va("Ammo:%d", value), colorTable[CT_HUD_GREEN]);
 			}
 			else
 			{
-//				value = cg.snap->ps.ammo[weaponData[cent->currentState.weapon].ammoIndex];
+				//				value = cg.snap->ps.ammo[weaponData[cent->currentState.weapon].ammoIndex];
 			}
-//			CG_DrawSmallStringColor(x, y - 60,va("Ammo:%d",value), colorTable[CT_HUD_GREEN] );
-			CG_DrawSmallStringColor(x, y - 40,va("Force:%d",cent->gent->client->ps.forcePower), colorTable[CT_HUD_GREEN] );
+			//			CG_DrawSmallStringColor(x, y - 60,va("Ammo:%d",value), colorTable[CT_HUD_GREEN] );
+			CG_DrawSmallStringColor(x, y - 40, va("Force:%d", cent->gent->client->ps.forcePower), colorTable[CT_HUD_GREEN]);
 		}
 
-		CG_DrawHUDRightFrame1(x,y);
-		CG_DrawForcePower(cent,x,y);
-		CG_DrawAmmo(cent,x,y);
-		CG_DrawMessageLit(cent,x,y);
-		CG_DrawHUDRightFrame2(x,y);
+		if (cg_widescreen.integer != 0) {
+			//Com_Printf("X is %i\n", x);
+			CG_DrawHUDRightFrame1((x * 1.382f), y);
+			CG_DrawForcePower(cent, (x * 1.382f), y);
+			CG_DrawAmmo(cent, (x * 1.382f), y);
+			CG_DrawMessageLit(cent, (x * 1.382f), y);
+			CG_DrawHUDRightFrame2((x * 1.382f), y);
+		}
+		else {
+			CG_DrawHUDRightFrame1(x, y);
+			CG_DrawForcePower(cent, x, y);
+			CG_DrawAmmo(cent, x, y);
+			CG_DrawMessageLit(cent, x, y);
+			CG_DrawHUDRightFrame2(x, y);
+		}
 	}
 }
 

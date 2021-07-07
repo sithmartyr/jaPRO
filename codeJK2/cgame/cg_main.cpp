@@ -461,7 +461,6 @@ void CG_RegisterCvars( void ) {
 	}
 
 	widescreenModificationCount = cg_widescreen.modificationCount;
-
 }
 
 /*
@@ -1762,8 +1761,6 @@ Ghoul2 Insert End
 
 	CG_InitConsoleCommands();
 
-	CG_UpdateWidescreen();
-
 //moved from CG_GameStateReceived because it's loaded sooner now
 	CG_InitLocalEntities();
 
@@ -1827,6 +1824,8 @@ void CG_Init( int serverCommandSequence ) {
 	CG_GameStateReceived();
 
 	CG_InitConsoleCommands();
+
+	CG_UpdateWidescreen();
 
 	cg.missionInfoFlashTime = 0;
 	cg.missionStatusShow = qfalse;
