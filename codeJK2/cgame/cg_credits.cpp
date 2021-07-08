@@ -544,7 +544,7 @@ qboolean CG_Credits_Draw( void )
 			// draw it, title first...
 			//
 			int iWidth = CreditCard.strTitle.GetPixelLength();
-			int iXpos  = (SCREEN_WIDTH - iWidth)/2;
+			int iXpos  = (cgs.screenWidth - iWidth)/2;
 			cgi_R_Font_DrawString(iXpos, iYpos, CreditCard.strTitle.c_str(), gv4Color, ghFontHandle, -1, gfFontScale);
 			//
 			iYpos += iFontHeight*2;	// skip blank line then move to main pos
@@ -553,7 +553,7 @@ qboolean CG_Credits_Draw( void )
 			{
 				StringAndSize_t &StringAndSize = CreditCard.vstrText[i];
 				iWidth = StringAndSize.GetPixelLength();
-				iXpos  = (SCREEN_WIDTH - iWidth)/2;
+				iXpos  = (cgs.screenWidth - iWidth)/2;
 				cgi_R_Font_DrawString(iXpos, iYpos, StringAndSize.c_str(), gv4Color, ghFontHandle, -1, gfFontScale);
 				iYpos += iFontHeight;
 			}
@@ -614,7 +614,7 @@ qboolean CG_Credits_Draw( void )
 						bool bIsDotted = !!CreditLine.vstrText.size();	// eg "STUNTS ...................... MR ED"
 
 						int iWidth = CreditLine.strText.GetPixelLength();
-						int iXpos  = bIsDotted ? 4 : (SCREEN_WIDTH - iWidth)/2;
+						int iXpos  = bIsDotted ? 4 : (cgs.screenWidth - iWidth)/2;
 
 						gv4Color[3] = 1.0f;
 
@@ -626,7 +626,7 @@ qboolean CG_Credits_Draw( void )
 						{
 							StringAndSize_t &StringAndSize = CreditLine.vstrText[i];
 							iWidth = StringAndSize.GetPixelLength();
-							iXpos  = (SCREEN_WIDTH-4 - iWidth);
+							iXpos  = (cgs.screenWidth-4 - iWidth);
 							cgi_R_Font_DrawString(iXpos, iYpos, StringAndSize.c_str(), gv4Color, ghFontHandle, -1, gfFontScale);
 							iYpos += iFontHeight;
 						}

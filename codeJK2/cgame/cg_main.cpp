@@ -2941,7 +2941,7 @@ void CG_DrawInventorySelect( void )
 				if ( cgi_SP_GetStringTextString( itemName, data, sizeof( data )))
 				{
 					int w = cgi_R_Font_StrLenPixels( data, cgs.media.qhFontSmall, 1.0f );
-					int x = ( SCREEN_WIDTH - w ) / 2;
+					int x = ( cgs.screenWidth - w ) / 2;
 
 					cgi_R_Font_DrawString( x, (SCREEN_HEIGHT - 24), data, textColor, cgs.media.qhFontSmall, -1, 1.0f);
 				}
@@ -3041,7 +3041,7 @@ void CG_DrawDataPadInventorySelect( void )
 	{
 		cgi_SP_GetStringTextString("INGAME_EMPTY_INV",text, sizeof(text) );
 		int w = cgi_R_Font_StrLenPixels( text, cgs.media.qhFontSmall, 1.0f );
-		x = ( SCREEN_WIDTH - w ) / 2;
+		x = ( cgs.screenWidth - w ) / 2;
 		CG_DrawProportionalString(x, 300 + 22, text, CG_CENTER | CG_SMALLFONT, colorTable[CT_ICON_BLUE]);
 		return;
 	}

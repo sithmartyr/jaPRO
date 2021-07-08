@@ -207,6 +207,9 @@ typedef struct {
 	qhandle_t	whiteShader;
 	qhandle_t	consoleShader;
 
+	float			screenWidth;		// virtual screen width (originally 640)
+	float			screenHeight;
+
 	float		cgxadj;
 	float		cgyadj;
 	float		uixadj;

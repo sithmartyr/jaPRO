@@ -81,7 +81,7 @@ A width of 0 will draw with the original image width
 =================
 */
 void SCR_DrawPic( float x, float y, float width, float height, qhandle_t hShader ) {
-	re.DrawStretchPic( x, y, width, height, 0, 0, 1, 1, hShader, cls.uixadj, cls.uiyadj);
+	re.DrawStretchPic( x, y, width, height, 0, 0, 1, 1, hShader, 1, 1);
 }
 
 
@@ -175,8 +175,8 @@ void SCR_DrawSmallChar( int x, int y, int ch ) {
 	size = 0.03125;
 	size2 = 0.0625;
 
-	re.DrawStretchPic( x * cls.uixadj, y * cls.uiyadj,
-						SMALLCHAR_WIDTH * cls.uixadj, SMALLCHAR_HEIGHT * cls.uiyadj,
+	re.DrawStretchPic( x /** cls.uixadj*/, y /** cls.uiyadj*/,
+						SMALLCHAR_WIDTH * cls.uixadj, SMALLCHAR_HEIGHT /** cls.uiyadj*/,
 		fcol, frow,
 		fcol + size, frow + size2,
 		cls.charSetShader, con.xadjust, con.yadjust );

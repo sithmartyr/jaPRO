@@ -98,7 +98,7 @@ void CG_MissionFailed(void)
 		cgi_SP_GetStringTextString( "INGAME_MISSIONFAILED", text, sizeof(text) );
 
 	w = cgi_R_Font_StrLenPixels(text, cgs.media.qhFontMedium, 1.2f);	
-		cgi_R_Font_DrawString(320 - w/2, y, text, colorTable[CT_HUD_RED], cgs.media.qhFontMedium, -1, 1.2f);
+		cgi_R_Font_DrawString((cgs.screenWidth - w)/2, y, text, colorTable[CT_HUD_RED], cgs.media.qhFontMedium, -1, 1.2f);
 
 	switch (statusTextIndex)
 	{
@@ -141,11 +141,11 @@ void CG_MissionFailed(void)
 	}
 
 	w = cgi_R_Font_StrLenPixels(text, cgs.media.qhFontMedium, 1.2f);	
-		cgi_R_Font_DrawString(320 - w/2, y+30, text, colorTable[CT_HUD_RED], cgs.media.qhFontMedium, -1, 1.2f);
+		cgi_R_Font_DrawString((cgs.screenWidth - w)/2, y+30, text, colorTable[CT_HUD_RED], cgs.media.qhFontMedium, -1, 1.2f);
 
 		cgi_SP_GetStringTextString( "INGAME_RELOADMISSION", text, sizeof(text) );
 	w = cgi_R_Font_StrLenPixels(text, cgs.media.qhFontSmall, 1.0f);	
-		cgi_R_Font_DrawString(320 - w/2, 450, text, colorTable[CT_CYAN], cgs.media.qhFontSmall, -1, 1.0f);
+		cgi_R_Font_DrawString((cgs.screenWidth - w)/2, 450, text, colorTable[CT_CYAN], cgs.media.qhFontSmall, -1, 1.0f);
 
 }
 

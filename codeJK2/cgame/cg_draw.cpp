@@ -751,6 +751,7 @@ static void CG_DrawHUD( centity_t *cent )
 {
 	int x=cgs.screenWidth,y,value;
 	
+
 	if (cgi_UI_GetMenuInfo("lefthud",&x,&y))
 	{
 		// Draw all the HUD elements --eez
@@ -762,7 +763,7 @@ static void CG_DrawHUD( centity_t *cent )
 			CG_DrawSmallStringColor(x+5, y - 60,va("Armor:%d",cg.snap->ps.stats[STAT_ARMOR]), colorTable[CT_HUD_GREEN] );
 			CG_DrawSmallStringColor(x+5, y - 40,va("Health:%d",cg.snap->ps.stats[STAT_HEALTH]), colorTable[CT_HUD_GREEN] );
 		}
-
+		
 		CG_DrawHUDLeftFrame1(x,y);
 		CG_DrawArmor(x,y);
 		CG_DrawHealth(x,y);
@@ -792,21 +793,11 @@ static void CG_DrawHUD( centity_t *cent )
 			CG_DrawSmallStringColor(x, y - 40, va("Force:%d", cent->gent->client->ps.forcePower), colorTable[CT_HUD_GREEN]);
 		}
 
-		if (cg_widescreen.integer != 0) {
-			//Com_Printf("X is %i\n", x);
-			CG_DrawHUDRightFrame1((x * 1.382f), y);
-			CG_DrawForcePower(cent, (x * 1.382f), y);
-			CG_DrawAmmo(cent, (x * 1.382f), y);
-			CG_DrawMessageLit(cent, (x * 1.382f), y);
-			CG_DrawHUDRightFrame2((x * 1.382f), y);
-		}
-		else {
-			CG_DrawHUDRightFrame1(x, y);
-			CG_DrawForcePower(cent, x, y);
-			CG_DrawAmmo(cent, x, y);
-			CG_DrawMessageLit(cent, x, y);
-			CG_DrawHUDRightFrame2(x, y);
-		}
+		CG_DrawHUDRightFrame1(cgs.screenWidth - (SCREEN_WIDTH - x), y);
+		CG_DrawForcePower(cent, cgs.screenWidth - (SCREEN_WIDTH - x), y);
+		CG_DrawAmmo(cent, cgs.screenWidth - (SCREEN_WIDTH - x), y);
+		CG_DrawMessageLit(cent, cgs.screenWidth - (SCREEN_WIDTH - x), y);
+		CG_DrawHUDRightFrame2(cgs.screenWidth - (SCREEN_WIDTH - x), y);
 	}
 }
 
@@ -837,14 +828,14 @@ void CG_DrawDataPadHUD( centity_t *cent )
 {
 	int x,y;
 
-	x = 34;
+	x = ((cgs.screenWidth * (1 - (SCREEN_WIDTH / cgs.screenWidth))) / 2) + 34;
 	y = 286;
 
 	CG_DrawHUDLeftFrame1(x,y);
 	CG_DrawArmor(x,y);
 	CG_DrawHealth(x,y);
 
-	x = 526;
+	x = ((cgs.screenWidth * (1 - (SCREEN_WIDTH / cgs.screenWidth))) / 2) + 526;
 
 	if ((missionInfo_Updated) && ((cg_updatedDataPadForcePower1.integer) || (cg_updatedDataPadObjective.integer)))
 	{
@@ -876,7 +867,7 @@ void CG_DrawDataPadHUD( centity_t *cent )
 	CG_DrawMessageLit(cent,x,y);
 
 	cgi_R_SetColor( colorTable[CT_WHITE]);
-	CG_DrawPic( 0, 0, 640, 480, cgs.media.dataPadFrame );
+	CG_DrawPic((cgs.screenWidth * (1 - (SCREEN_WIDTH / cgs.screenWidth))) / 2, 0, 640, 480, cgs.media.dataPadFrame );
 
 }
 
@@ -2402,7 +2393,7 @@ static void CG_Draw2D( void )
 			if ( cg_missionInfoCentered.integer )
 			{
 				w = cgi_R_Font_StrLenPixels(text,cgs.media.qhFontSmall, 1.0f);
-				x_pos = (SCREEN_WIDTH/2)-(w/2);
+				x_pos = (cgs.screenWidth/2)-(w/2);
 			}
 			cgi_R_Font_DrawString(x_pos, y_pos, text,  colorTable[CT_LTRED1], cgs.media.qhFontMedium, -1, 1.0f);
 
@@ -2413,7 +2404,7 @@ static void CG_Draw2D( void )
 				if ( cg_missionInfoCentered.integer )
 				{
 					w = cgi_R_Font_StrLenPixels(text,cgs.media.qhFontSmall, 1.0f);
-					x_pos = (SCREEN_WIDTH/2)-(w/2);
+					x_pos = (cgs.screenWidth/2)-(w/2);
 				}
 				cgi_R_Font_DrawString(x_pos, y_pos, text,  colorTable[CT_LTRED1], cgs.media.qhFontMedium, -1, 1.0f);
 			}
@@ -2425,7 +2416,7 @@ static void CG_Draw2D( void )
 				if ( cg_missionInfoCentered.integer )
 				{
 					w = cgi_R_Font_StrLenPixels(text,cgs.media.qhFontSmall, 1.0f);
-					x_pos = (SCREEN_WIDTH/2)-(w/2);
+					x_pos = (cgs.screenWidth/2)-(w/2);
 				}
 				cgi_R_Font_DrawString(x_pos, y_pos, text,  colorTable[CT_LTRED1], cgs.media.qhFontMedium, -1, 1.0f);
 			}
