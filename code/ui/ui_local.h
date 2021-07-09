@@ -94,6 +94,7 @@ typedef struct {
 	glconfig_t			glconfig;
 	qboolean			debugMode;
 	qhandle_t			whiteShader;
+	qhandle_t			blackShader;
 	qhandle_t			menuBackShader;
 	qhandle_t			cursor;
 	float				scalex;

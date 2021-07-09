@@ -360,7 +360,6 @@ void UI_DrawHandlePic( float x, float y, float w, float h, qhandle_t hShader )
 		t0 = 0;
 		t1 = 1;
 	}
-
 	ui.R_DrawStretchPic( x, y, w, h, s0, t0, s1, t1, hShader, cls.uixadj, cls.uiyadj );
 }
 

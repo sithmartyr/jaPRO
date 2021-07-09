@@ -868,7 +868,6 @@ void CG_DrawDataPadHUD( centity_t *cent )
 
 	cgi_R_SetColor( colorTable[CT_WHITE]);
 	CG_DrawPic((cgs.screenWidth * (1 - (SCREEN_WIDTH / cgs.screenWidth))) / 2, 0, 640, 480, cgs.media.dataPadFrame );
-
 }
 
 //------------------------
@@ -1271,7 +1270,8 @@ static void CG_DrawPickupItem( void ) {
 		{
 			CG_RegisterItemVisuals( value );
 			cgi_R_SetColor( fadeColor );
-			CG_DrawPic( 573, 340, ICON_SIZE, ICON_SIZE, cg_items[ value ].icon );
+			//CG_DrawPic(573, 340, ICON_SIZE, ICON_SIZE, cg_items[ value ].icon );
+			cgi_R_DrawStretchPic(cgs.screenWidth - (SCREEN_WIDTH - 573), 340, ICON_SIZE, ICON_SIZE, 0, 0, 1, 1, cg_items[value].icon);
 			//CG_DrawBigString( ICON_SIZE + 16, 398, bg_itemlist[ value ].classname, fadeColor[0] );
 			//CG_DrawProportionalString( ICON_SIZE + 16, 398, 
 			//	bg_itemlist[ value ].classname, CG_SMALLFONT,fadeColor );

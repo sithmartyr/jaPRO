@@ -4248,6 +4248,7 @@ void Menu_Cache( void )
 	uis.cursor		= ui.R_RegisterShaderNoMip( "menu/new/crosshairb");
 	// Common menu graphics
 	uis.whiteShader = ui.R_RegisterShader( "white" );
+	uis.blackShader = ui.R_RegisterShader("console");
 	uis.menuBackShader = ui.R_RegisterShaderNoMip( "menu/art/unknownmap" );
 }
 

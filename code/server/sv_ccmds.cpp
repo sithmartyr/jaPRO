@@ -79,7 +79,6 @@ static bool SV_Map_( ForceReload_e eForceReload )
 	{
 		SG_WipeSavegame("auto");
 	}
-
 	SV_SpawnServer( map, eForceReload, qtrue );	// start up the map
 	return true;
 }

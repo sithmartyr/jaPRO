@@ -198,7 +198,6 @@ void SV_SpawnServer( const char *server, ForceReload_e eForceReload, qboolean bA
 {
 	int			i;
 	int			checksum;
-
 	re.RegisterMedia_LevelLoadBegin( server, eForceReload, bAllowScreenDissolve );
 
 
@@ -207,7 +206,6 @@ void SV_SpawnServer( const char *server, ForceReload_e eForceReload, qboolean bA
 
 	// shut down the existing game if it is running
 	SV_ShutdownGameProgs(qtrue);
-
 	Com_Printf ("------ Server Initialization ------\n%s\n", com_version->string);
 	Com_Printf ("Server: %s\n",server);
 
@@ -220,7 +218,7 @@ void SV_SpawnServer( const char *server, ForceReload_e eForceReload, qboolean bA
 
 	// don't let sound stutter and dump all stuff on the hunk
 	CL_MapLoading();
-
+	
 	if (!CM_SameMap(server))
 	{ //rww - only clear if not loading the same map
 		CM_ClearMap();
@@ -256,7 +254,6 @@ void SV_SpawnServer( const char *server, ForceReload_e eForceReload, qboolean bA
 	if ( !Cvar_VariableIntegerValue("sv_running") ) {
 		SV_Startup();
 	}
-
  	// clear out those shaders, images and Models
 	/*R_InitImages();
 	R_InitShaders();

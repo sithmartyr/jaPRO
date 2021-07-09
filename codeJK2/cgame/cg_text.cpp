@@ -448,7 +448,7 @@ void CG_DrawCaptionText(void)
 		w = cgi_R_Font_StrLenPixels(cg.captionText[i], cgs.media.qhFontMedium, fFontScale);
 		if (w)
 		{
-			x = (SCREEN_WIDTH-w) / 2;
+			x = (cgs.screenWidth * (1 - (SCREEN_WIDTH / cgs.screenWidth))) / 2;
 			cgi_R_Font_DrawString(x, y, cg.captionText[i], textcolor_caption, cgs.media.qhFontMedium, -1, fFontScale);
 			y += fontHeight;
 		}

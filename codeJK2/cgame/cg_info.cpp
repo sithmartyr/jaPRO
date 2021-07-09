@@ -90,7 +90,7 @@ static void MissionPrint_Line(const int color, const int objectIndex, int &missi
 			y += 32 + 4;
 		}
 		//CG_DrawProportionalString(108, y,str, CG_SMALLFONT, colorTable[color] );
-		cgi_R_Font_DrawString (108, y, str, colorTable[color], cgs.media.qhFontMedium, -1, 1.0f);
+		cgi_R_Font_DrawString (((cgs.screenWidth - SCREEN_WIDTH) / 2) + (cgs.screenWidth * 0.16875), y, str, colorTable[color], cgs.media.qhFontMedium, -1, 1.0f);
 		++missionYcnt;
 	}
 	// Text is too long, break into lines.
@@ -211,7 +211,7 @@ void MissionInformation_Draw( centity_t *cent )
 	// Frame
 	char text[1024]={0};
 	cgi_SP_GetStringTextString( "INGAME_OBJECTIVES", text, sizeof(text) );
-	cgi_R_Font_DrawString (96, missionYpos-23, text, colorTable[CT_WHITE], cgs.media.qhFontMedium, -1, 1.0f);
+	cgi_R_Font_DrawString (((cgs.screenWidth - SCREEN_WIDTH) / 2) + (cgs.screenWidth * 0.15), missionYpos-23, text, colorTable[CT_WHITE], cgs.media.qhFontMedium, -1, 1.0f);
 
 	int missionYcnt = 0;
 
@@ -242,10 +242,10 @@ void MissionInformation_Draw( centity_t *cent )
 			}
 
 			//	OBJECTIVE_STAT_PENDING
-			CG_DrawPic( 88,   totalY,   16,  16, cgs.media.messageObjCircle);	// Circle in front
+			CG_DrawPic(((cgs.screenWidth - SCREEN_WIDTH) / 2) + (cgs.screenWidth * 0.16875) - 20,   totalY,   16,  16, cgs.media.messageObjCircle);	// Circle in front
 			if (cent->gent->client->sess.mission_objectives[i].status == OBJECTIVE_STAT_SUCCEEDED)
 			{
-				CG_DrawPic( 88,   totalY,   16,  16, cgs.media.messageLitOn);	// Center Dot
+				CG_DrawPic(((cgs.screenWidth - SCREEN_WIDTH) / 2) + (cgs.screenWidth * 0.16875) - 20,   totalY,   16,  16, cgs.media.messageLitOn);	// Center Dot
 			}
 			MissionPrint_Line(CT_BLUE3, i, missionYcnt );
 		}
@@ -255,7 +255,7 @@ void MissionInformation_Draw( centity_t *cent )
 	{
 		cgi_SP_GetStringTextString( "INGAME_OBJNONE", text, sizeof(text) );
 //		CG_DrawProportionalString(108, missionYpos, text, CG_SMALLFONT, colorTable[CT_LTBLUE1] );
-		cgi_R_Font_DrawString (108, missionYpos, text, colorTable[CT_LTBLUE1], cgs.media.qhFontMedium, -1, 1.0f);
+		cgi_R_Font_DrawString (((cgs.screenWidth - SCREEN_WIDTH) / 2) + (cgs.screenWidth * 0.16875), missionYpos, text, colorTable[CT_LTBLUE1], cgs.media.qhFontMedium, -1, 1.0f);
 	}
 }
 

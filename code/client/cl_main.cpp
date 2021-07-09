@@ -175,7 +175,6 @@ void CL_MapLoading( void ) {
 	if ( !com_cl_running->integer ) {
 		return;
 	}
-
 	Con_Close();
 	Key_SetCatcher( 0 );
 
