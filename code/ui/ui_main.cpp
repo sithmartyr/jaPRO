@@ -833,7 +833,6 @@ Make 2D drawing functions use widescreen or 640x480 coordinates
 void UI_WideScreenMode(qboolean on) {
 	if (on) {
 		trap_MVAPI_SetVirtualScreen(uiInfo.screenWidth, (float)SCREEN_HEIGHT);
-		//Com_Printf("screenWidth: %f\n", uiInfo.screenWidth);
 	}
 	else {
 		trap_MVAPI_SetVirtualScreen((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT);

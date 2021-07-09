@@ -74,7 +74,8 @@ void UI_DrawConnect( const char *servername, const char *updateInfoString ) {
 	{
 		//UI_DrawHandlePic(0, 0, uiInfo.screenWidth, SCREEN_HEIGHT, uis.menuBackShader);
 		ui.R_DrawStretchPic(0, 0, uiInfo.screenWidth, SCREEN_HEIGHT, 0, 0, 0, 0, uis.menuBackShader, cls.uixadj, cls.uiyadj);
-		UI_DrawHandlePic((uiInfo.screenWidth * (1 - (SCREEN_WIDTH / uiInfo.screenWidth))) / 2, 0, SCREEN_WIDTH, SCREEN_HEIGHT, uis.menuBackShader );
+		ui.R_DrawStretchPic((uiInfo.screenWidth * (1 - (SCREEN_WIDTH / uiInfo.screenWidth))) / 2, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 1, 1, uis.menuBackShader, SCREEN_WIDTH / uiInfo.screenWidth, cls.uiyadj); //sithmartyr: hacky, but it works
+		//UI_DrawHandlePic((uiInfo.screenWidth * (1 - (SCREEN_WIDTH / uiInfo.screenWidth))) / 2, 0, SCREEN_WIDTH, SCREEN_HEIGHT, uis.menuBackShader );
 	}
 	else {
 		UI_DrawThumbNail(0,0, SCREEN_WIDTH, SCREEN_HEIGHT, levelPic );
