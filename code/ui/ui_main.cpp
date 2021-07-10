@@ -4162,11 +4162,21 @@ void UI_DataPadMenu(void)
 	}
 	else if (newObjective)
 	{
-		Menus_ActivateByName("datapadMissionMenu");
+		if (ui_widescreen.integer) {
+			Menus_ActivateByName("datapadMissionMenu_ws");
+		}
+		else {
+			Menus_ActivateByName("datapadMissionMenu");
+		}
 	}
 	else
 	{
-		Menus_ActivateByName("datapadMissionMenu");
+		if (ui_widescreen.integer) {
+			Menus_ActivateByName("datapadMissionMenu_ws");
+		}
+		else {
+			Menus_ActivateByName("datapadMissionMenu");
+		}
 	}
 	ui.Key_SetCatcher( KEYCATCH_UI );
 

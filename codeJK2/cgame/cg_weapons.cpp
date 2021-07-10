@@ -1522,7 +1522,7 @@ void CG_DrawDataPadWeaponSelect( void )
 	bigIconSize = 80;
 	pad = 8;
 
-	x = 320;
+	x = cgs.screenWidth / 2;
 	y = 300;
 
 	// Background
@@ -1645,7 +1645,7 @@ void CG_DrawDataPadWeaponSelect( void )
 
 	if (text[0])
 	{
-		CG_DisplayBoxedText(70,50,500,300,text,
+		CG_DisplayBoxedText(((cgs.screenWidth* (1 - (SCREEN_WIDTH / cgs.screenWidth))) / 2) + 70,50,500,300,text,
 												cgs.media.qhFontSmall,
 												0.7f,
 												textColor
@@ -1670,10 +1670,11 @@ CG_DrawDataPadIconBackground
 void CG_DrawDataPadIconBackground(int backgroundType)
 {
 	int				height,xAdd,x2,y2;
+	float			width;
 	int				prongLeftX,prongRightX;
 	qhandle_t		background;
 
-	x2 = 0;
+	x2 = (cgs.screenWidth * (1 - (SCREEN_WIDTH / cgs.screenWidth))) / 2;
 	y2 = 295;
 
 	prongLeftX =x2+97;
@@ -1753,8 +1754,8 @@ void CG_DrawDataPadIconBackground(int backgroundType)
 	cgi_R_SetColor( colorTable[CT_WHITE] );
 //	height = (int) (60.0f*cg.iconDataPadHUDPercent);
 	height = (int) 60.0f;
-	CG_DrawPic( x2+110, y2+30, 410, -height, background);	// Top half
-	CG_DrawPic( x2+110, y2+30-2,410, height, background);	// Bottom half
+	CG_DrawPic(x2+110, y2+30, 410, -height, background);	// Top half
+	CG_DrawPic(x2+110, y2+30-2,410, height, background);	// Bottom half
 
 	// And now for the prongs
 	if (backgroundType==ICON_INVENTORY)

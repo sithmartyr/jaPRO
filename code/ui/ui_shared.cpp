@@ -11254,6 +11254,7 @@ void Menu_HandleKey(menuDef_t *menu, int key, qboolean down)
 		return;
 	}
 
+	extern vmCvar_t ui_widescreen;
 	// Special Data Pad key handling (gotta love the datapad)
 	if (!(key & K_CHAR_FLAG) )
 	{	//only check keys not chars
@@ -11262,9 +11263,13 @@ void Menu_HandleKey(menuDef_t *menu, int key, qboolean down)
 		if (Q_stricmp(b,"datapad") == 0)	// They hit the datapad key again.
 		{
 			if (( Q_stricmp(menu->window.name,"datapadMissionMenu") == 0) ||
-			 (Q_stricmp(menu->window.name,"datapadWeaponsMenu") == 0) ||
-			 (Q_stricmp(menu->window.name,"datapadForcePowersMenu") == 0) ||
-			 (Q_stricmp(menu->window.name,"datapadInventoryMenu") == 0))
+			(Q_stricmp(menu->window.name, "datapadMissionMenu_ws") == 0) ||
+			(Q_stricmp(menu->window.name,"datapadWeaponsMenu") == 0) ||
+			(Q_stricmp(menu->window.name, "datapadWeaponsMenu_ws") == 0) ||
+			(Q_stricmp(menu->window.name,"datapadForcePowersMenu") == 0) ||
+			(Q_stricmp(menu->window.name, "datapadForcePowersMenu_ws") == 0) ||
+			(Q_stricmp(menu->window.name,"datapadInventoryMenu") == 0) ||
+			(Q_stricmp(menu->window.name, "datapadInventoryMenu_ws") == 0))
 			{
 				key = A_ESCAPE;	//pop on outta here
 			}

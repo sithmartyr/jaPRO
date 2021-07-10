@@ -3079,7 +3079,7 @@ void CG_DrawDataPadInventorySelect( void )
 	bigIconSize = 80;
 	pad = 8;
 
-	x = 320;
+	x = cgs.screenWidth / 2;
 	y = 300;
 
 	// Left side ICONS
@@ -3187,7 +3187,7 @@ void CG_DrawDataPadInventorySelect( void )
 
 		if (text[0])
 		{
-			CG_DisplayBoxedText(70,50,500,300,text,
+			CG_DisplayBoxedText(((cgs.screenWidth * (1 - (SCREEN_WIDTH / cgs.screenWidth))) / 2) + 70,50,500,300,text,
 														cgs.media.qhFontSmall,
 														0.7f,
 														textColor
@@ -3748,7 +3748,7 @@ void CG_DrawDataPadForceSelect( void )
 	bigIconSize = 60;
 	pad = 8;
 
-	x = 320;
+	x = cgs.screenWidth / 2;
 	y = 310;
 
 	i = cg.DataPadforcepowerSelect - 1;
@@ -3868,7 +3868,7 @@ void CG_DrawDataPadForceSelect( void )
 	if (text[0])
 	{
 
-		CG_DisplayBoxedText(70,50,500,300,va("%s%s",text,text2),
+		CG_DisplayBoxedText(((cgs.screenWidth* (1 - (SCREEN_WIDTH / cgs.screenWidth))) / 2) + 70,50,500,300,va("%s%s",text,text2),
 													cgs.media.qhFontSmall,
 													0.7f,
 													colorTable[CT_ICON_BLUE]
