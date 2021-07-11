@@ -1132,38 +1132,39 @@ const void* RB_TransformPic(const void* data) {
 	tess.indexes[numIndexes + 4] = numVerts + 0;
 	tess.indexes[numIndexes + 5] = numVerts + 1;
 
-	tess.vertexColorsui[numVerts] =
-		tess.vertexColorsui[numVerts + 1] =
-		tess.vertexColorsui[numVerts + 2] =
-		tess.vertexColorsui[numVerts + 3] = backEnd.color2Dui;
+	byteAlias_t* baDest = NULL, * baSource = (byteAlias_t*)&backEnd.color2D;
+	baDest = (byteAlias_t*)&tess.vertexColors[numVerts + 0]; baDest->ui = baSource->ui;
+	baDest = (byteAlias_t*)&tess.vertexColors[numVerts + 1]; baDest->ui = baSource->ui;
+	baDest = (byteAlias_t*)&tess.vertexColors[numVerts + 2]; baDest->ui = baSource->ui;
+	baDest = (byteAlias_t*)&tess.vertexColors[numVerts + 3]; baDest->ui = baSource->ui;
 
 	tess.xyz[numVerts][0] = cmd->x;
 	tess.xyz[numVerts][1] = cmd->y;
 	tess.xyz[numVerts][2] = 0;
 
-	tess.texCoords[0][numVerts][0] = cmd->s1;
-	tess.texCoords[0][numVerts][1] = cmd->t1;
+	tess.texCoords[numVerts][0][0] = cmd->s1;
+	tess.texCoords[numVerts][0][1] = cmd->t1;
 
 	tess.xyz[numVerts + 1][0] = cmd->x + cmd->m[0][0];
 	tess.xyz[numVerts + 1][1] = cmd->y + cmd->m[1][0];
 	tess.xyz[numVerts + 1][2] = 0;
 
-	tess.texCoords[0][numVerts + 1][0] = cmd->s2;
-	tess.texCoords[0][numVerts + 1][1] = cmd->t1;
+	tess.texCoords[numVerts + 1][0][0] = cmd->s2;
+	tess.texCoords[numVerts + 1][0][1] = cmd->t1;
 
 	tess.xyz[numVerts + 2][0] = cmd->x + cmd->m[0][0] + cmd->m[0][1];
 	tess.xyz[numVerts + 2][1] = cmd->y + cmd->m[1][0] + cmd->m[1][1];
 	tess.xyz[numVerts + 2][2] = 0;
 
-	tess.texCoords[0][numVerts + 2][0] = cmd->s2;
-	tess.texCoords[0][numVerts + 2][1] = cmd->t2;
+	tess.texCoords[numVerts + 2][0][0] = cmd->s2;
+	tess.texCoords[numVerts + 2][0][1] = cmd->t2;
 
 	tess.xyz[numVerts + 3][0] = cmd->x + cmd->m[0][1];
 	tess.xyz[numVerts + 3][1] = cmd->y + cmd->m[1][1];
 	tess.xyz[numVerts + 3][2] = 0;
 
-	tess.texCoords[0][numVerts + 3][0] = cmd->s1;
-	tess.texCoords[0][numVerts + 3][1] = cmd->t2;
+	tess.texCoords[numVerts + 3][0][0] = cmd->s1;
+	tess.texCoords[numVerts + 3][0][1] = cmd->t2;
 
 
 	return (const void*)(cmd + 1);

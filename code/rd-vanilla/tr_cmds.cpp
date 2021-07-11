@@ -284,11 +284,15 @@ void RE_RotatePic(float x, float y, float w, float h, float s1, float t1,
 /*
 =============
 RE_RotatePic2
+
+x, y, w and h are in virtual screen coordinates
+xadjust is 640 / virtual screen width
+yadjust is 480 / virtual screen height
 =============
 */
-void RE_RotatePic2(float x, float y, float w, float h,
-	float s1, float t1, float s2, float t2, float a, qhandle_t hShader, float xadjust, float yadjust) {
-	transformPicCommand_t *cmd;
+void RE_RotatePic2(float x, float y, float w, float h, float s1, float t1,
+	float s2, float t2, float a, qhandle_t hShader, float xadjust, float yadjust) {
+	transformPicCommand_t* cmd;
 	float s, c;
 
 	cmd = (transformPicCommand_t*)R_GetCommandBuffer(sizeof(*cmd));
