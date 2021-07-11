@@ -90,7 +90,7 @@ static void MissionPrint_Line(const int color, const int objectIndex, int &missi
 			y += 32 + 4;
 		}
 		//CG_DrawProportionalString(108, y,str, CG_SMALLFONT, colorTable[color] );
-		cgi_R_Font_DrawString (((cgs.screenWidth - SCREEN_WIDTH) / 2) + (cgs.screenWidth * 0.16875), y, str, colorTable[color], cgs.media.qhFontMedium, -1, 1.0f);
+		cgi_R_Font_DrawString (((cgs.screenWidth - SCREEN_WIDTH) / 2) + (cgs.screenWidth * 0.16875), y-14, str, colorTable[color], cgs.media.qhFontMedium, -1, 1.0f);
 		++missionYcnt;
 	}
 	// Text is too long, break into lines.
@@ -132,7 +132,7 @@ static void MissionPrint_Line(const int color, const int objectIndex, int &missi
 
 				y = missionYpos + (iYPixelsPerLine * missionYcnt);
 
-				CG_DrawProportionalString(108, y, holdText, CG_SMALLFONT, colorTable[color] );
+				CG_DrawProportionalString(108, y-14, holdText, CG_SMALLFONT, colorTable[color] );
 				++missionYcnt;
 			} 
 			else if (*(str+1) == '\0')
@@ -142,7 +142,7 @@ static void MissionPrint_Line(const int color, const int objectIndex, int &missi
 				y = missionYpos + (iYPixelsPerLine * missionYcnt);
 
 				Q_strncpyz( holdText, strBegin, charLen);
-				CG_DrawProportionalString(108, y, holdText, CG_SMALLFONT, colorTable[color] );
+				CG_DrawProportionalString(108, y-14, holdText, CG_SMALLFONT, colorTable[color] );
 				++missionYcnt;
 				break;
 			}
@@ -157,14 +157,14 @@ static void MissionPrint_Line(const int color, const int objectIndex, int &missi
 	{
 		y = missionYpos + (iYPixelsPerLine * missionYcnt);
 		graphic = cgi_R_RegisterShaderNoMip("textures/system/securitycode");
-		CG_DrawPic( 320 - (128/2), y+8, 128, 32, graphic );
+		CG_DrawPic( (cgs.screenWidth * 0.5f) - (128/2), y-8, 128, 32, graphic );
 		obj_graphics[0] = qtrue;
 	}
 	else if (objectIndex == KEJIM_POST_OBJ3)
 	{
 		y = missionYpos + (iYPixelsPerLine * missionYcnt);
 		graphic = cgi_R_RegisterShaderNoMip("textures/system/securitycode_red");
-		CG_DrawPic( 320 - (32/2), y+8, 32, 32, graphic );
+		CG_DrawPic((cgs.screenWidth * 0.5f) - (32/2), y-8, 32, 32, graphic );
 		obj_graphics[1] = qtrue;
 	}
 	else if (objectIndex == KEJIM_POST_OBJ4)
@@ -175,7 +175,7 @@ static void MissionPrint_Line(const int color, const int objectIndex, int &missi
 			y += 32 + 4;
 		}
 		graphic = cgi_R_RegisterShaderNoMip("textures/system/securitycode_green");
-		CG_DrawPic( 320 - (32/2), y+8, 32, 32, graphic );
+		CG_DrawPic((cgs.screenWidth * 0.5f) - (32/2), y-8, 32, 32, graphic );
 		obj_graphics[2] = qtrue;
 	}
 	else if (objectIndex == KEJIM_POST_OBJ5)
@@ -190,7 +190,7 @@ static void MissionPrint_Line(const int color, const int objectIndex, int &missi
 			y += 32 + 4;
 		}
 		graphic = cgi_R_RegisterShaderNoMip("textures/system/securitycode_blue");
-		CG_DrawPic( 320 - (32/2), y+8, 32, 32, graphic );
+		CG_DrawPic((cgs.screenWidth * 0.5f) - (32/2), y-8, 32, 32, graphic );
 		obj_graphics[3] = qtrue;
 	}
 }
@@ -211,7 +211,7 @@ void MissionInformation_Draw( centity_t *cent )
 	// Frame
 	char text[1024]={0};
 	cgi_SP_GetStringTextString( "INGAME_OBJECTIVES", text, sizeof(text) );
-	cgi_R_Font_DrawString (((cgs.screenWidth - SCREEN_WIDTH) / 2) + (cgs.screenWidth * 0.15), missionYpos-23, text, colorTable[CT_WHITE], cgs.media.qhFontMedium, -1, 1.0f);
+	cgi_R_Font_DrawString (((cgs.screenWidth - SCREEN_WIDTH) / 2) + (cgs.screenWidth * 0.15), missionYpos-37, text, colorTable[CT_WHITE], cgs.media.qhFontMedium, -1, 1.0f);
 
 	int missionYcnt = 0;
 
@@ -242,10 +242,10 @@ void MissionInformation_Draw( centity_t *cent )
 			}
 
 			//	OBJECTIVE_STAT_PENDING
-			CG_DrawPic(((cgs.screenWidth - SCREEN_WIDTH) / 2) + (cgs.screenWidth * 0.16875) - 20,   totalY,   16,  16, cgs.media.messageObjCircle);	// Circle in front
+			CG_DrawPic(((cgs.screenWidth - SCREEN_WIDTH) / 2) + (cgs.screenWidth * 0.16875) - 20,   totalY-14,   16,  16, cgs.media.messageObjCircle);	// Circle in front
 			if (cent->gent->client->sess.mission_objectives[i].status == OBJECTIVE_STAT_SUCCEEDED)
 			{
-				CG_DrawPic(((cgs.screenWidth - SCREEN_WIDTH) / 2) + (cgs.screenWidth * 0.16875) - 20,   totalY,   16,  16, cgs.media.messageLitOn);	// Center Dot
+				CG_DrawPic(((cgs.screenWidth - SCREEN_WIDTH) / 2) + (cgs.screenWidth * 0.16875) - 20,   totalY-14,   16,  16, cgs.media.messageLitOn);	// Center Dot
 			}
 			MissionPrint_Line(CT_BLUE3, i, missionYcnt );
 		}
