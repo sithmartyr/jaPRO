@@ -307,7 +307,7 @@ SCR_DrawDemoRecording
 */
 void SCR_DrawDemoRecording( void ) {
 	char	string[1024];
-	int		pos;
+	int		pos, xpos, ypos;
 
 	if ( !clc.demorecording ) {
 		return;
@@ -319,9 +319,25 @@ void SCR_DrawDemoRecording( void ) {
 		return;
 	}
 	pos = FS_FTell( clc.demofile );
-	Com_sprintf( string, sizeof(string), "RECORDING %s: %ik", clc.demoName, pos / 1024 );
+	if (cg_demoRecordMsg->integer > 2)//JAPRO ENGINE
+		Com_sprintf( string, sizeof(string), "RECORDING %s: %ik", clc.demoName, pos / 1024 );
+	else if (cg_demoRecordMsg->integer == 2)
+		Com_sprintf( string, sizeof(string), "%s: %ik", clc.demoName, pos / 1024 );
+	else if (cg_demoRecordMsg->integer == 1)
+		Com_sprintf( string, sizeof(string), "%s", clc.demoName);
+	else if (cg_demoRecordMsg->integer < 1)
+		Com_sprintf( string, sizeof(string), "REC" );
 
-	SCR_DrawStringExt( 320 - strlen( string ) * 4, 20, 8, string, g_color_table[7], qtrue, qfalse );
+	if (cg_demoRecordMsg->integer < 3) {
+		xpos = 5;
+		ypos = 36;
+	}
+	else {
+		xpos = 320 - strlen( string ) * 4;
+		ypos = 20;
+	}
+
+	SCR_DrawStringExt( xpos, ypos, 8, string, g_color_table[7], qtrue, qfalse );//Loda fixme, draw in a better spot?
 }
 
 
