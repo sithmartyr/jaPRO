@@ -1412,6 +1412,7 @@ struct shaderCommands_s
 	vec4_t		normal[SHADER_MAX_VERTEXES] QALIGN(16);
 	vec2_t		texCoords[SHADER_MAX_VERTEXES][NUM_TEX_COORDS] QALIGN(16);
 	color4ub_t	vertexColors[SHADER_MAX_VERTEXES] QALIGN(16);
+	uint32_t	vertexColorsui[SHADER_MAX_VERTEXES];
 	byte		vertexAlphas[SHADER_MAX_VERTEXES][4] QALIGN(16);
 	int			vertexDlightBits[SHADER_MAX_VERTEXES] QALIGN(16);
 
@@ -1762,6 +1763,15 @@ typedef struct
 
 typedef struct {
 	int		commandId;
+	shader_t* shader;
+	float	x, y;
+	float	m[2][2];
+	float	s1, t1;
+	float	s2, t2;
+} transformPicCommand_t;
+
+typedef struct {
+	int		commandId;
 	trRefdef_t	refdef;
 	viewParms_t	viewParms;
 	drawSurf_t *drawSurfs;
@@ -1775,6 +1785,7 @@ typedef enum {
 	RC_SCISSOR,
 	RC_ROTATE_PIC,
 	RC_ROTATE_PIC2,
+	RC_TRANSFORM_PIC,
 	RC_DRAW_SURFS,
 	RC_DRAW_BUFFER,
 	RC_SWAP_BUFFERS,

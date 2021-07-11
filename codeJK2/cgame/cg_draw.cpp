@@ -1047,7 +1047,7 @@ static void CG_DrawZoomMask( void )
 	//--------------------------------
 	else if ( cg.zoomMode == 2 )
 	{
-		float xOffset = 0.5f * (cgs.screenWidth - 640);
+		float xOffset = (cgs.screenWidth * (1 - (SCREEN_WIDTH / cgs.screenWidth))) / 2;
 
 		level = (float)(80.0f - cg_zoomFov) / 80.0f;
 
@@ -1128,6 +1128,7 @@ static void CG_DrawZoomMask( void )
 			cy = 240 + cos( (i+90.0f)/57.296f ) * 190;
 
 			CG_DrawRotatePic2( xOffset + cx, cy, 12, 24, 90 - i, cgs.media.disruptorInsertTick );
+			
 		}
 
 		// FIXME: doesn't know about ammo!! which is bad because it draws charge beyond what ammo you may have..
