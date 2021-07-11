@@ -285,6 +285,7 @@ vmCvar_t	cg_updatedDataPadForcePower3;
 vmCvar_t	cg_updatedDataPadObjective;
 
 vmCvar_t	cg_widescreen;
+vmCvar_t	cg_camZoomOverrideFactor;
 
 vmCvar_t	cg_thirdPerson;
 vmCvar_t	cg_thirdPersonRange;
@@ -397,6 +398,7 @@ static cvarTable_t cvarTable[] = {
 	{ &cg_footsteps, "cg_footsteps", "1", CVAR_CHEAT },
 
 	{ &cg_widescreen, "cg_widescreen", "1", CVAR_ARCHIVE },
+	{ &cg_camZoomOverrideFactor, "cg_camZoomOverrideFactor", "1.2", CVAR_ARCHIVE},
 
 	{ &cg_thirdPerson, "cg_thirdPerson", "0", CVAR_SAVEGAME },
 	{ &cg_thirdPersonRange, "cg_thirdPersonRange", "80", CVAR_ARCHIVE },

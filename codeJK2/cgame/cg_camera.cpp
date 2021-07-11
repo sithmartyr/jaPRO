@@ -359,6 +359,7 @@ CGCam_Zoom
 
 void CGCam_Zoom( float FOV, float duration )
 {
+	FOV *= cg_camZoomOverrideFactor.value;
 	if ( !duration )
 	{
 		CGCam_SetFOV( FOV );

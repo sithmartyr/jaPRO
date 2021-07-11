@@ -597,6 +597,7 @@ extern	vmCvar_t		cg_updatedDataPadForcePower3;
 extern	vmCvar_t		cg_updatedDataPadObjective;
 
 extern	vmCvar_t		cg_widescreen;
+extern	vmCvar_t		cg_camZoomOverrideFactor;
 
 extern	vmCvar_t		cg_thirdPerson;
 extern	vmCvar_t		cg_thirdPersonRange;
