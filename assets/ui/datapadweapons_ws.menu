@@ -1,0 +1,353 @@
+// DATAPAD/WEAPONS menu
+// 
+// defines from ui_shared.h
+{
+
+	menuDef 
+	{
+		name					"datapadWeaponsMenu_ws"
+		fullScreen				1								// MENU_TRUE				
+		rect					0 0 640 480						// Size and position of the menu
+		visible					1								// Visible on open
+		focusColor				1 1 1 1							// Focus color for text and items
+		appearanceIncrement		75								// In miliseconds
+		descX					320
+		descY					350
+		descScale				.8
+		descColor				.96 .933 .40 1					// Focus color for text and items
+		descAlignment			ITEM_ALIGN_CENTER		
+
+		onESC 
+		{ 
+				uiScript		closedatapad					// Close menu				
+		}
+
+		onOpen
+		{ 
+				uiScript		nextDataPadWeapon
+		}
+
+		//----------------------------------------------------------------------------------------------
+		//
+		//	MENU BACKGROUND
+		//
+		//----------------------------------------------------------------------------------------------
+		itemDef										
+		{
+			name				frame_pic
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				0 0 640 480
+			background			"*white"
+			forecolor			0 0 0 1
+			visible				1
+			decoration
+		}
+
+		//----------------------------------------------------------------------------------------------
+		//
+		//	MISSION TEXT
+		//
+		//----------------------------------------------------------------------------------------------
+		itemDef 
+		{
+			name				weapons
+			group				none
+			style				WINDOW_STYLE_EMPTY
+			type				ITEM_TYPE_OWNERDRAW
+			rect				50 40 95 40 
+			textscale			.4
+			forecolor			.509 .609 .847 1
+			appearance_slot		1		
+			visible				1
+			ownerdraw			204					// UI_DATAPAD_WEAPONS
+		}
+
+		//----------------------------------------------------------------------------------------------
+		//
+		//	ITEM
+		//
+		//----------------------------------------------------------------------------------------------
+		itemDef										
+		{
+			name				weapon1
+			group				none
+			style				WINDOW_STYLE_SHADER
+			rect				0 0 640 480
+//			type				4						// Hack to show the number of lines of text
+			forecolor			1 1 1 1
+			visible				0
+			decoration
+		}
+
+		// Weapon Line 1
+		itemDef 
+		{
+			name				weapon1_line1
+			group				none
+			text				@MENUS3_THIS_IS_LINE_1
+			font				2
+			textscale			1
+			textstyle			3
+			rect				320 220 110 20
+			textalign			ITEM_ALIGN_LEFT
+			textalignx			30
+			textaligny			100
+			decoration
+			forecolor			.433 .703 .722 1
+			visible				0
+		}
+
+
+		//----------------------------------------------------------------------------------------------
+		//
+		//	LOWER MENU BUTTONS
+		//
+		//----------------------------------------------------------------------------------------------
+
+
+		itemDef 
+		{
+			name				mission
+			group				none
+			style				WINDOW_STYLE_EMPTY
+			type				ITEM_TYPE_BUTTON
+			rect				164 382 95 25
+			text				@MENUS1_DP_MISSION
+			descText			@MENUS1_AN_OVERVIEW_OF_MISSION
+			font				2
+			textscale			1
+			textalignx			48
+			textalign			ITEM_ALIGN_CENTER
+			forecolor			.509 .609 .847 1
+			appearance_slot		1		
+			visible				1
+
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ; 
+				close			all ; 
+				open			datapadMissionMenu_ws 
+			}
+		}
+
+		itemDef 
+		{
+			name				exit
+			group				none
+			style				WINDOW_STYLE_EMPTY
+			type				ITEM_TYPE_BUTTON
+			rect				380 382 95 25 
+			text				@MENUS1_RESUME
+			descText			@MENUS1_RETURN_TO_GAME
+			font				2
+			textscale			1
+			textalignx			48
+			textalign			ITEM_ALIGN_CENTER
+			forecolor			.509 .609 .847 1
+			appearance_slot		1		
+			visible				1
+
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ; 
+				uiScript		closedatapad			// Close menu				
+			}
+		}
+
+		itemDef 
+		{
+			name				weapons
+			group				none
+			style				WINDOW_STYLE_EMPTY
+			type				ITEM_TYPE_BUTTON
+			rect				164 420 0 0
+			text				@MENUS0_WEAPONS
+			descText			@MENUS1_VIEW_CURRENTLY_OWNED
+			font				2
+			textscale			1
+			textalignx			48
+			textalign			ITEM_ALIGN_CENTER
+			forecolor			.509 .609 .847 1
+			appearance_slot		1		
+			visible				1
+		}
+
+
+		itemDef 
+		{
+			name			prevweapon_on
+			group			none
+			style			WINDOW_STYLE_SHADER
+			rect			281 384 24 26 
+			background		"gfx/menus/dp_arrow_lon"				// Frame
+			forecolor		1 1 1 1
+			decoration
+			visible		0
+		}
+
+		itemDef 
+		{
+			name			prevweapon_off
+			group			none
+			style			WINDOW_STYLE_SHADER
+			rect			281 384 24 26 
+			background		"gfx/menus/dp_arrow_l"				// Frame
+			forecolor		1 1 1 1
+			decoration
+			visible		1
+		}
+
+		itemDef 
+		{
+			name				prevweapon
+			group				none
+			style				WINDOW_STYLE_EMPTY
+			type				ITEM_TYPE_BUTTON
+			rect				281 384 24 26 
+			font				2
+			textscale			1
+			textalignx			48
+			textalign			ITEM_ALIGN_CENTER
+			forecolor			.509 .609 .847 1
+			appearance_slot		1		
+			visible				1
+
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ; 
+				uiScript		prevDataPadWeapon
+			}
+
+			mouseEnter 
+			{ 
+				hide		prevweapon_off
+				show		prevweapon_on
+			}
+
+			mouseExit 
+			{ 
+				show		prevweapon_off
+				hide		prevweapon_on
+			}	  	  
+		}
+
+		itemDef 
+		{
+			name			nextweapon_on
+			group			none
+			style			WINDOW_STYLE_SHADER
+			rect			336 384 24 26 
+			background		"gfx/menus/dp_arrow_ron"				// Frame
+			forecolor		1 1 1 1
+			decoration
+			visible		0
+		}
+
+		itemDef 
+		{
+			name			nextweapon_off
+			group			none
+			style			WINDOW_STYLE_SHADER
+			rect			336 384 24 26 
+			background		"gfx/menus/dp_arrow_r"				// Frame
+			forecolor		1 1 1 1
+			decoration
+			visible		1
+		}
+
+		itemDef 
+		{
+			name				nextweapon
+			group				none
+			style				WINDOW_STYLE_EMPTY
+			type				ITEM_TYPE_BUTTON
+			rect				336 384 24 26 
+			font				2
+			textscale			1
+			textalignx			48
+			textalign			ITEM_ALIGN_CENTER
+			forecolor			.509 .609 .847 1
+			appearance_slot		1		
+			visible				1
+
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ; 
+				uiScript		nextDataPadWeapon
+			}
+
+			mouseEnter 
+			{ 
+				hide		nextweapon_off
+				show		nextweapon_on
+			}
+
+			mouseExit 
+			{ 
+				show		nextweapon_off
+				hide		nextweapon_on
+			}	  	  
+		}
+
+		itemDef 
+		{
+			name				inventory
+			group				none
+			style				WINDOW_STYLE_EMPTY
+			type				ITEM_TYPE_BUTTON
+			rect				274 420 95 25 
+			text				@MENUS1_INVENTORY
+			descText			@MENUS1_VIEW_CURRENT_INVENTORY
+			font				2
+			textscale			1
+			textalignx			48
+			textalign			ITEM_ALIGN_CENTER
+			forecolor			.509 .609 .847 1
+			appearance_slot		1		
+			visible				1
+
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ; 
+				close			all ; 
+				open			datapadInventoryMenu_ws 
+			}
+		}
+
+		itemDef 
+		{
+			name				force
+			group				none
+			style				WINDOW_STYLE_EMPTY
+			type				ITEM_TYPE_BUTTON
+			rect				380 420 95 25
+			text				@MENUS1_DP_FORCE
+			descText			@MENUS1_VIEW_CURRENT_FORCE_POWERS
+			font				2
+			textscale			1
+			textalignx			48
+			textalign			ITEM_ALIGN_CENTER
+			forecolor			.509 .609 .847 1
+			appearance_slot		1		
+			visible				1
+
+			action 
+			{ 
+				play			"sound/interface/button1.wav" ; 
+				close			all ; 
+				open			datapadForcePowersMenu_ws 
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
