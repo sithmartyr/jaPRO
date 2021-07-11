@@ -736,7 +736,7 @@ static void CG_DrawBatteryCharge( void )
 		cgi_R_SetColor( color );
 
 		// batteries were just charged
-		CG_DrawPic( 605, 295, 24, 32, cgs.media.batteryChargeShader );
+		CG_DrawPic(cgs.screenWidth - (SCREEN_WIDTH - 605), 295, 24, 32, cgs.media.batteryChargeShader );
 	}
 }
 
@@ -969,7 +969,7 @@ static void CG_DrawZoomMask( void )
 		{
 			// draw blue tinted distortion mask, trying to make it as small as is necessary to fill in the viewable area
 			cgi_R_SetColor( colorTable[CT_WHITE] );
-			CG_DrawPic( 34, 48, 570, 362, cgs.media.binocularStatic );
+			CG_DrawPic( 34, 48, 570 * (cgs.screenWidth / SCREEN_WIDTH), 362, cgs.media.binocularStatic );
 		}
 	
 		CG_DrawBinocularNumbers( power );
@@ -1039,7 +1039,7 @@ static void CG_DrawZoomMask( void )
 			color1[3] = 0.2f;
 
 			cgi_R_SetColor( color1 );
-			CG_DrawPic( 60, 394.5f, charge * 141, 5, cgs.media.whiteShader );
+			CG_DrawPic( 60 * (cgs.screenWidth / SCREEN_WIDTH), 394.5f, (charge * 141) * (cgs.screenWidth / SCREEN_WIDTH), 5, cgs.media.whiteShader );
 		}
 	}
 	//------------
@@ -1156,9 +1156,9 @@ static void CG_DrawZoomMask( void )
 		if ( power )
 		{
 			cgi_R_SetColor( colorTable[CT_WHITE] );
-			CG_DrawPic( 34, 29, 580, 410, cgs.media.laGogglesStatic );
+			CG_DrawPic( 34 * (cgs.screenWidth / SCREEN_WIDTH), 29, 580 * (cgs.screenWidth / SCREEN_WIDTH), 410, cgs.media.laGogglesStatic );
 
-			CG_DrawPic( 570, 140, 12, 160, cgs.media.laGogglesSideBit );
+			CG_DrawPic( 570 * (cgs.screenWidth / SCREEN_WIDTH), 140, 12 * (cgs.screenWidth / SCREEN_WIDTH), 160, cgs.media.laGogglesSideBit );
 			
 			float light = (128-cent->gent->lightLevel) * 0.5f;
 
@@ -1177,13 +1177,13 @@ static void CG_DrawZoomMask( void )
 			color1[3] = 1.0f;
 			cgi_R_SetColor( color1 );
 
-			CG_DrawPic( 565, pos1, 22, 8, cgs.media.laGogglesBracket );
-			CG_DrawPic( 558, pos2, 14, 5, cgs.media.laGogglesArrow );
+			CG_DrawPic(565 * (cgs.screenWidth / SCREEN_WIDTH), pos1, 22 * (cgs.screenWidth / SCREEN_WIDTH), 8, cgs.media.laGogglesBracket );
+			CG_DrawPic(558 * (cgs.screenWidth / SCREEN_WIDTH), pos2, 14 * (cgs.screenWidth / SCREEN_WIDTH), 5, cgs.media.laGogglesArrow );
 		}
 
 		// Black out the area behind the battery display
 		cgi_R_SetColor( colorTable[CT_DKGREY]);
-		CG_DrawPic( 236, 357, 164, 16, cgs.media.whiteShader );
+		CG_DrawPic( 236 * (cgs.screenWidth / SCREEN_WIDTH), 357, 164 * (cgs.screenWidth / SCREEN_WIDTH), 16, cgs.media.whiteShader );
 
 		if ( power )
 		{
@@ -1194,7 +1194,7 @@ static void CG_DrawZoomMask( void )
 			color1[3] = 0.4f;
 
 			cgi_R_SetColor( color1 );
-			CG_DrawPic( 247.0f, 362.5f, charge * 143.0f, 6, cgs.media.whiteShader );
+			CG_DrawPic( 247.0f * (cgs.screenWidth / SCREEN_WIDTH), 362.5f, (charge * 143.0f) * (cgs.screenWidth / SCREEN_WIDTH), 6, cgs.media.whiteShader );
 
 			// pulsing dot bit
 			color1[0] = sin( cg.time * 0.01f ) * 0.5f + 0.5f;
@@ -1205,10 +1205,10 @@ static void CG_DrawZoomMask( void )
 
 			cgi_R_SetColor( color1 );
 
-			CG_DrawPic( 65, 94, 16, 16, cgs.media.binocularCircle );
+			CG_DrawPic( 65 * (cgs.screenWidth / SCREEN_WIDTH), 94, 16 * (cgs.screenWidth / SCREEN_WIDTH), 16, cgs.media.binocularCircle );
 		}
 	
-		CG_DrawPic( 0, 0, 640, 480, cgs.media.laGogglesMask );
+		CG_DrawPic( 0 * (cgs.screenWidth / SCREEN_WIDTH), 0, 640 * (cgs.screenWidth / SCREEN_WIDTH), 480, cgs.media.laGogglesMask );
 	}
 }
 
