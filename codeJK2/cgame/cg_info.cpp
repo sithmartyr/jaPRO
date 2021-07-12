@@ -418,7 +418,12 @@ void CG_DrawInformation( void ) {
 		// put up the pre-defined levelshot for this map...
 		//
 		cgi_R_SetColor( NULL );
-		CG_DrawPic( 0, 0, cgs.screenWidth, SCREEN_HEIGHT, levelshot );
+		if (levelshot == cgi_R_RegisterShaderNoMip("menu/art/unknownmap")) {
+			CG_DrawPic((cgs.screenWidth * (1 - (SCREEN_WIDTH / cgs.screenWidth))) / 2, 0, SCREEN_WIDTH, SCREEN_HEIGHT, levelshot);
+		}
+		else {
+			CG_DrawPic(0, 0, cgs.screenWidth, SCREEN_HEIGHT, levelshot);
+		}
 	}
 
 	if ( g_eSavedGameJustLoaded != eFULL && !strcmp(s,"kejim_post") )//special case for first map!
