@@ -39,6 +39,7 @@ extern int	g_rocketSlackTime;
 
 void WP_TraceSetStart( const gentity_t *ent, vec3_t start, const vec3_t mins, const vec3_t maxs );
 gentity_t *CreateMissile( vec3_t org, vec3_t dir, float vel, int life, gentity_t *owner, qboolean altFire = qfalse );
+gentity_t* CreateMissileNew(vec3_t org, vec3_t dir, float vel, int life, gentity_t* owner, qboolean altFire, qboolean inheritance);
 void WP_Stick( gentity_t *missile, trace_t *trace, float fudge_distance = 0.0f );
 void WP_Explode( gentity_t *self );
 void WP_ExplosiveDie( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int meansOfDeath,int dFlags,int hitLoc );

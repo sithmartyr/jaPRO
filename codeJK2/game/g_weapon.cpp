@@ -103,6 +103,50 @@ gentity_t *CreateMissile( vec3_t org, vec3_t dir, float vel, int life, gentity_t
 	return missile;
 }
 
+gentity_t* CreateMissileNew(vec3_t org, vec3_t dir, float vel, int life, gentity_t* owner, qboolean altFire, qboolean inheritance)
+//-----------------------------------------------------------------------------
+{
+	gentity_t* missile;
+	float newVel = vel;
+	vec3_t newDir;
+
+	VectorCopy(dir, newDir);
+
+	missile = G_Spawn();
+
+	missile->nextthink = level.time + life;
+	missile->e_ThinkFunc = thinkF_G_FreeEntity;
+	missile->s.eType = ET_MISSILE;
+	missile->svFlags = SVF_USE_CURRENT_ORIGIN;
+	missile->owner = owner;
+
+	if (altFire)
+		missile->s.eFlags |= EF_ALT_FIRING;
+
+	missile->s.pos.trType = TR_LINEAR;
+
+
+	missile->s.pos.trTime = level.time;// - MISSILE_PRESTEP_TIME;	// NOTENOTE This is a Quake 3 addition over JK2 - do unlagged stuff here?
+
+	SnapVector(org);
+	VectorCopy(org, missile->s.pos.trBase);
+
+	if (inheritance && owner->client) {
+		if (cg_fullInheritance.integer) {
+			VectorMA(newDir, cg_projectileInheritance.value / vel, owner->client->ps.velocity, newDir);
+		}
+		else {
+			newVel = newVel + DotProduct(newDir, owner->client->ps.velocity) * cg_projectileInheritance.value;
+		}
+	}
+
+	VectorScale(newDir, newVel, missile->s.pos.trDelta);
+	VectorCopy(org, missile->currentOrigin);
+	SnapVector(missile->s.pos.trDelta);
+
+	return missile;
+}
+
 
 //-----------------------------------------------------------------------------
 void WP_Stick( gentity_t *missile, trace_t *trace, float fudge_distance )

@@ -28,6 +28,60 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "w_local.h"
 #include "g_functions.h"
 
+void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire) {
+	gentity_t* missile;
+	vec3_t start;
+	int damage = weaponData[WP_DISRUPTOR].damage;
+	float count;
+
+	//gentity_t* missile = CreateMissile(wpMuzzle, wpFwd, 9000 * cg_projectileVelocityScale.value, 10000, ent, altFire);
+	
+
+	if (altFire) {
+		//VectorCopy(ent->client->renderInfo.eyePoint, wpFwd);
+		AngleVectors(ent->client->renderInfo.eyeAngles, wpFwd, NULL, NULL);
+
+		Com_Printf("VECTOR X = %f\nVECTOR Y = %f\nVECTOR Z = %f\n", wpFwd[0], wpFwd[1], wpFwd[2]);
+		missile = CreateMissileNew(wpMuzzle, wpFwd, 9000 * cg_projectileVelocityScale.value, 10000, ent, altFire, qtrue);
+
+		count = (level.time - ent->client->ps.weaponChargeTime) / 50.0f;
+
+		damage = 50;
+
+		if (count < 1)
+			count = 1;
+		else if (count > 30)
+			count = 30;
+
+		damage += count * 2.5f;
+
+		count = ((count - 1.0f) / (30.0f - 1.0f)) * (20.0f - 1.0f) + 1.0f;//scale count back down to the 1-5 range for bullet size
+		if (count < 2)
+			count = 2;
+
+	}
+	else {
+		missile = CreateMissileNew(wpMuzzle, wpFwd, 9000 * cg_projectileVelocityScale.value, 10000, ent, altFire, qtrue);
+		missile->s.eFlags |= EF_ALT_FIRING;
+	}
+
+	
+
+	VectorMA(wpMuzzle, -6, wpFwd, wpMuzzle);
+	
+	missile->classname = "bryar_proj";
+	missile->s.weapon = WP_BRYAR_PISTOL;
+
+	missile->damage = damage;
+	missile->dflags = DAMAGE_DEATH_KNOCKBACK;
+	missile->methodOfDeath = MOD_BLASTER;
+	missile->clipmask = MASK_SHOT;
+
+	missile->bounceCount = 8;
+
+	missile->s.pos.trType = TR_GRAVITY;
+}
+
 //---------------------
 //	Tenloss Disruptor
 //---------------------
@@ -349,13 +403,24 @@ void WP_DisruptorAltFire( gentity_t *ent )
 void WP_FireDisruptor( gentity_t *ent, qboolean alt_fire )
 //---------------------------------------------------------
 {
+
 	if ( alt_fire )
 	{
-		WP_DisruptorAltFire( ent );
+		if ((cg_tweakWeapons.integer & WT_PROJ_SNIPER)) {
+			WP_DisruptorProjectileFire(ent, qtrue);
+		}
+		else {
+			WP_DisruptorAltFire(ent);
+		}
 	}
 	else
 	{
-		WP_DisruptorMainFire( ent );
+		if ((cg_tweakWeapons.integer & WT_PROJ_SNIPER)) {
+			WP_DisruptorProjectileFire(ent, qfalse);
+		}
+		else {
+			WP_DisruptorMainFire(ent);
+		}
 	}
 
 	G_PlayEffect( G_EffectIndex( "disruptor/line_cap" ), wpMuzzle, wpFwd );

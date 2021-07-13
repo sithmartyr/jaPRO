@@ -599,6 +599,11 @@ extern	vmCvar_t		cg_updatedDataPadObjective;
 extern	vmCvar_t		cg_widescreen;
 extern	vmCvar_t		cg_camZoomOverrideFactor;
 
+extern	vmCvar_t		cg_tweakWeapons;
+extern	vmCvar_t		cg_projectileVelocityScale;
+extern	vmCvar_t		cg_fullInheritance;
+extern	vmCvar_t		cg_projectileInheritance;
+
 extern	vmCvar_t		cg_thirdPerson;
 extern	vmCvar_t		cg_thirdPersonRange;
 extern	vmCvar_t		cg_thirdPersonMaxRange;
@@ -1184,6 +1189,9 @@ void	SetWeaponSelectTime(void);
 void	CG_ClearLightStyles( void );
 void	CG_RunLightStyles( void );
 void	CG_SetLightstyle( int i );
+
+
+#define	WT_PROJ_SNIPER (1<<0)
 
 
 #endif	//__CG_LOCAL_H__

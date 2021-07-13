@@ -287,6 +287,11 @@ vmCvar_t	cg_updatedDataPadObjective;
 vmCvar_t	cg_widescreen;
 vmCvar_t	cg_camZoomOverrideFactor;
 
+vmCvar_t	cg_tweakWeapons;
+vmCvar_t	cg_projectileVelocityScale;
+vmCvar_t	cg_fullInheritance;
+vmCvar_t	cg_projectileInheritance;
+
 vmCvar_t	cg_thirdPerson;
 vmCvar_t	cg_thirdPersonRange;
 vmCvar_t	cg_thirdPersonMaxRange;
@@ -359,7 +364,7 @@ static cvarTable_t cvarTable[] = {
 	{ &cg_drawCrosshair, "cg_drawCrosshair", "1", CVAR_ARCHIVE },
 	{ &cg_dynamicCrosshair, "cg_dynamicCrosshair", "1", CVAR_ARCHIVE },
 	{ &cg_crosshairIdentifyTarget, "cg_crosshairIdentifyTarget", "1", CVAR_ARCHIVE },
-	{ &cg_crosshairForceHint, "cg_crosshairForceHint", "1", CVAR_ARCHIVE|CVAR_SAVEGAME|CVAR_NORESTART },
+	{ &cg_crosshairForceHint, "cg_crosshairForceHint", "1", CVAR_ARCHIVE | CVAR_SAVEGAME | CVAR_NORESTART },
 	{ &cg_missionstatusscreen, "cg_missionstatusscreen", "0", CVAR_ROM},
 	{ &cg_endcredits, "cg_endcredits", "0", 0},
 	{ &cg_updatedDataPadForcePower1, "cg_updatedDataPadForcePower1", "0", 0},
@@ -399,6 +404,11 @@ static cvarTable_t cvarTable[] = {
 
 	{ &cg_widescreen, "cg_widescreen", "1", CVAR_ARCHIVE },
 	{ &cg_camZoomOverrideFactor, "cg_camZoomOverrideFactor", "1.2", CVAR_ARCHIVE},
+
+	{ &cg_tweakWeapons, "cg_tweakWeapons", "0", CVAR_ARCHIVE},
+	{ &cg_projectileVelocityScale, "cg_projectileVelocityScale", "1", CVAR_ARCHIVE},
+	{ &cg_fullInheritance, "cg_fullInheritance", "0", CVAR_ARCHIVE },
+	{ &cg_projectileInheritance, "cg_projectileInheritance", "0", CVAR_ARCHIVE },
 
 	{ &cg_thirdPerson, "cg_thirdPerson", "0", CVAR_SAVEGAME },
 	{ &cg_thirdPersonRange, "cg_thirdPersonRange", "80", CVAR_ARCHIVE },
