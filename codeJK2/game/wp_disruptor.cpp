@@ -38,10 +38,8 @@ void WP_DisruptorProjectileFire(gentity_t* ent, qboolean altFire) {
 	
 
 	if (altFire) {
-		//VectorCopy(ent->client->renderInfo.eyePoint, wpFwd);
 		AngleVectors(ent->client->renderInfo.eyeAngles, wpFwd, NULL, NULL);
 
-		Com_Printf("VECTOR X = %f\nVECTOR Y = %f\nVECTOR Z = %f\n", wpFwd[0], wpFwd[1], wpFwd[2]);
 		missile = CreateMissileNew(wpMuzzle, wpFwd, 9000 * cg_projectileVelocityScale.value, 10000, ent, altFire, qtrue);
 
 		count = (level.time - ent->client->ps.weaponChargeTime) / 50.0f;
