@@ -2225,8 +2225,8 @@ static qboolean CG_RenderingFromMiscCamera()
 		else if ( !Q_stricmp( "misc_panel_turret", g_entities[cg.snap->ps.viewEntity].classname ))
 		{
 			// could do a panel turret screen overlay...this is a cheesy placeholder
-			CG_DrawPic( 30, 90, 128, 300, cgs.media.turretComputerOverlayShader );
-			CG_DrawPic( 610, 90, -128, 300, cgs.media.turretComputerOverlayShader );
+			CG_DrawPic(30 * (cgs.screenWidth / SCREEN_WIDTH), 90, 128, 300, cgs.media.turretComputerOverlayShader );
+			CG_DrawPic(cgs.screenWidth - (30 * (cgs.screenWidth / SCREEN_WIDTH)), 90, -128, 300, cgs.media.turretComputerOverlayShader );
 		}
 		else
 		{
