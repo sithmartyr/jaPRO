@@ -506,6 +506,8 @@ void FireWeapon( gentity_t *ent, qboolean alt_fire )
 //---------------------------------------------------------
 {
 	float alert = 256;
+	int seed = ent->client->ps.pm_time % 10000;
+	
 
 	// track shots taken for accuracy tracking.
 	ent->client->ps.persistant[PERS_ACCURACY_SHOTS]++;
@@ -627,7 +629,7 @@ void FireWeapon( gentity_t *ent, qboolean alt_fire )
 		break;
 
 	case WP_BLASTER:
-		WP_FireBlaster( ent, alt_fire );
+		WP_FireBlaster( ent, alt_fire, seed );
 		break;
 
 	case WP_DISRUPTOR:
@@ -640,7 +642,7 @@ void FireWeapon( gentity_t *ent, qboolean alt_fire )
 		break;
 
 	case WP_REPEATER:
-		WP_FireRepeater( ent, alt_fire );
+		WP_FireRepeater( ent, alt_fire, seed );
 		break;
 
 	case WP_DEMP2:
@@ -717,7 +719,7 @@ void FireWeapon( gentity_t *ent, qboolean alt_fire )
 		// TEMP
 		if ( alt_fire )
 		{
-			WP_FireRepeater( ent, alt_fire );
+			WP_FireRepeater( ent, alt_fire, seed );
 		}
 		else
 		{

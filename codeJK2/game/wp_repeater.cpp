@@ -146,7 +146,7 @@ static void WP_RepeaterAltFire( gentity_t *ent )
 }
 
 //---------------------------------------------------------
-void WP_FireRepeater( gentity_t *ent, qboolean alt_fire )
+void WP_FireRepeater( gentity_t *ent, qboolean alt_fire, int seed )
 //---------------------------------------------------------
 {
 	vec3_t	dir, angs;
@@ -172,8 +172,21 @@ void WP_FireRepeater( gentity_t *ent, qboolean alt_fire )
 		else
 		{
 			// add some slop to the alt-fire direction
-			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * REPEATER_SPREAD;
-			angs[YAW]	+= Q_flrand(-1.0f, 1.0f) * REPEATER_SPREAD;
+			if (cg_tweakWeapons.integer & WT_NO_SPREAD) {
+				angs[PITCH] += Q_crandom(&seed) * BLASTER_MAIN_SPREAD * 0.1;
+				angs[YAW] += Q_crandom(&seed) * BLASTER_MAIN_SPREAD * 0.1;
+			}
+			else if (cg_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE) {
+				float theta = M_PI * Q_crandom(&seed);
+				float r = Q_random(&seed) * BLASTER_MAIN_SPREAD;
+
+				angs[PITCH] += r * sin(theta);
+				angs[YAW] += r * cos(theta);
+			}
+			else {
+				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * REPEATER_SPREAD;
+				angs[YAW] += Q_flrand(-1.0f, 1.0f) * REPEATER_SPREAD;
+			}
 		}
 
 		AngleVectors( angs, dir, NULL, NULL );

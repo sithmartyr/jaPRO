@@ -1192,6 +1192,7 @@ void	CG_SetLightstyle( int i );
 
 
 #define	WT_PROJ_SNIPER (1<<0)
-
+#define WT_NO_SPREAD (1<<1)
+#define WT_PSEUDORANDOM_FIRE (1<<2)
 
 #endif	//__CG_LOCAL_H__
