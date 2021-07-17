@@ -1350,11 +1350,9 @@ Fixed fov at intermissions, otherwise account for fov variable and zooms.
 */
 //extern float	g_fov;
 static qboolean	CG_CalcFov( void ) {
-	float	x, v, phase;
-	float	fov_x, fov_y;
+	float	fov_x;
 	float	f;
-	int		contents, inwater;
-	gentity_t	*player = &g_entities[0];
+		gentity_t	*player = &g_entities[0];
 
 	if ( cg.predicted_player_state.pm_type == PM_INTERMISSION ) {
 		// if in intermission, use a fixed value
@@ -1469,34 +1467,6 @@ static qboolean	CG_CalcFov( void ) {
 			}
 		}
 	}
-
-	if (cg_fovAspectAdjust.integer && cg.refdef.width * 3 > cg.refdef.height * 4) {
-		// 4:3 screen with fov_x must fit INTO widescreen
-		float width = cg.refdef.height * (4.0f / 3.0f);
-
-		x = width / tan(DEG2RAD(0.5f * fov_x));
-		fov_x = RAD2DEG(2 * atan2(cg.refdef.width, x));
-		fov_y = RAD2DEG(2 * atan2(cg.refdef.height, x));
-	}
-	else {
-		x = cg.refdef.width / tan(DEG2RAD(0.5f * fov_x));
-		fov_y = RAD2DEG(2 * atan2(cg.refdef.height, x));
-	}
-
-	// warp if underwater
-	contents = CG_PointContents(cg.refdef.vieworg, -1);
-	if (contents & (CONTENTS_WATER | CONTENTS_SLIME | CONTENTS_LAVA)) {
-		phase = cg.time / 1000.0 * WAVE_FREQUENCY * M_PI * 2;
-		v = WAVE_AMPLITUDE * sin(phase);
-		fov_x += v;
-		fov_y -= v;
-		inwater = qtrue;
-	}
-
-
-	cg.refdef.fov_x = fov_x;
-	cg.refdef.fov_y = fov_y;
-
 
 //	g_fov = fov_x;
 	return ( CG_CalcFOVFromX( fov_x ) );
