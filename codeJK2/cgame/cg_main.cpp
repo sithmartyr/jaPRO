@@ -404,6 +404,7 @@ static cvarTable_t cvarTable[] = {
 
 	{ &cg_widescreen, "cg_widescreen", "1", CVAR_ARCHIVE },
 	{ &cg_camZoomOverrideFactor, "cg_camZoomOverrideFactor", "1.2", CVAR_ARCHIVE},
+	{ &cg_fovAspectAdjust, "cg_fovAspectAdjust", "0", CVAR_ARCHIVE },
 
 	{ &cg_tweakWeapons, "cg_tweakWeapons", "0", CVAR_ARCHIVE},
 	{ &cg_projectileVelocityScale, "cg_projectileVelocityScale", "1", CVAR_ARCHIVE},
