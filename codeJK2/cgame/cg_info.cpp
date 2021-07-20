@@ -132,7 +132,7 @@ static void MissionPrint_Line(const int color, const int objectIndex, int &missi
 
 				y = missionYpos + (iYPixelsPerLine * missionYcnt);
 
-				CG_DrawProportionalString(108, y-14, holdText, CG_SMALLFONT, colorTable[color] );
+				CG_DrawProportionalString(((cgs.screenWidth - SCREEN_WIDTH) / 2) + (108 * (cgs.screenWidth / SCREEN_WIDTH)), y-14, holdText, CG_SMALLFONT, colorTable[color] );
 				++missionYcnt;
 			} 
 			else if (*(str+1) == '\0')
@@ -142,7 +142,7 @@ static void MissionPrint_Line(const int color, const int objectIndex, int &missi
 				y = missionYpos + (iYPixelsPerLine * missionYcnt);
 
 				Q_strncpyz( holdText, strBegin, charLen);
-				CG_DrawProportionalString(108, y-14, holdText, CG_SMALLFONT, colorTable[color] );
+				CG_DrawProportionalString(((cgs.screenWidth - SCREEN_WIDTH) / 2) + (108 * (cgs.screenWidth / SCREEN_WIDTH)), y-14, holdText, CG_SMALLFONT, colorTable[color] );
 				++missionYcnt;
 				break;
 			}

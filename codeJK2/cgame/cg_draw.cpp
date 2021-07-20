@@ -1555,7 +1555,7 @@ static void CG_DrawCrosshair( vec3_t worldPoint )
 		w *= 2.0f;
 		h *= 2.0f;
 
-		CG_DrawPic(x + cg.refdef.x + 0.5f * w, y + cg.refdef.y + 0.5f * w, w, h, cgs.media.forceCoronaShader);
+		CG_DrawPic(x + cg.refdef.x - 0.5f * w, y + cg.refdef.y - 0.5f * w, w, h, cgs.media.forceCoronaShader);
 	}
 
 	cgi_R_SetColor( NULL );
@@ -2213,11 +2213,11 @@ static qboolean CG_RenderingFromMiscCamera()
 			// Only doing a misc_camera, so check health.
 			if ( g_entities[cg.snap->ps.viewEntity].health > 0 )
 			{
-				CG_DrawPic( 0, 0, 640, 480, cgi_R_RegisterShader( "gfx/2d/workingCamera" ));
+				CG_DrawPic( 0, 0, cgs.screenWidth, 480, cgi_R_RegisterShader( "gfx/2d/workingCamera" ));
 			}
 			else
 			{
-				CG_DrawPic( 0, 0, 640, 480, cgi_R_RegisterShader( "gfx/2d/brokenCamera" ));
+				CG_DrawPic( 0, 0, cgs.screenWidth, 480, cgi_R_RegisterShader( "gfx/2d/brokenCamera" ));
 			}
 			// don't render other 2d stuff
 			return qtrue;
@@ -2231,7 +2231,7 @@ static qboolean CG_RenderingFromMiscCamera()
 		else
 		{
 			// FIXME: make sure that this assumption is correct...because I'm assuming that I must be a droid.
-			CG_DrawPic( 0, 0, 640, 480, cgi_R_RegisterShader( "gfx/2d/droid_view" ));
+			CG_DrawPic( 0, 0, cgs.screenWidth, 480, cgi_R_RegisterShader( "gfx/2d/droid_view" ));
 		}
 	}
 

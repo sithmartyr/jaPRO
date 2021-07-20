@@ -4158,7 +4158,12 @@ void UI_DataPadMenu(void)
 
 	if (newForcePower)
 	{
-		Menus_ActivateByName("datapadForcePowersMenu");
+		if (ui_widescreen.integer) {
+			Menus_ActivateByName("datapadForcePowersMenu_ws");
+		}
+		else {
+			Menus_ActivateByName("datapadForcePowersMenu");
+		}
 	}
 	else if (newObjective)
 	{
