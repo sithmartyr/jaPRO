@@ -33,7 +33,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 //-----------------------
 
 //---------------------------------------------------------
-static void WP_FlechetteMainFire( gentity_t *ent )
+static void WP_FlechetteMainFire( gentity_t *ent, int seed )
 //---------------------------------------------------------
 {
 	vec3_t		fwd, angs, start;
@@ -60,16 +60,42 @@ static void WP_FlechetteMainFire( gentity_t *ent )
 	{
 		vectoangles( wpFwd, angs );
 
-		if ( i == 0 && ent->s.number == 0 )
-		{
-			// do nothing on the first shot for the player, this one will hit the crosshairs
+		if (!(cg_tweakWeapons.integer & WT_FLECHETTE_SPRD)) {
+			if (i == 0 && ent->s.number == 0)
+			{
+				// do nothing on the first shot for the player, this one will hit the crosshairs
+			}
+			else
+			{
+				if (cg_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE) {
+					angs[PITCH] += Q_crandom(&seed) * FLECHETTE_SPREAD;
+					angs[YAW] += Q_crandom(&seed) * FLECHETTE_SPREAD;
+				}
+				else {
+					angs[PITCH] += Q_flrand(-1.0f, 1.0f) * FLECHETTE_SPREAD;
+					angs[YAW] += Q_flrand(-1.0f, 1.0f) * FLECHETTE_SPREAD;
+				}
+				
+			}
 		}
-		else
-		{
-			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * FLECHETTE_SPREAD;
-			angs[YAW]	+= Q_flrand(-1.0f, 1.0f) * FLECHETTE_SPREAD;
+		else {
+			if (i == 1) {
+				angs[PITCH] += 0.65f * FLECHETTE_SPREAD;
+				angs[YAW] += 0.65f * FLECHETTE_SPREAD;
+			}
+			else if (i == 2) {
+				angs[PITCH] += 0.65f * FLECHETTE_SPREAD;
+				angs[YAW] -= 0.65f * FLECHETTE_SPREAD;
+			}
+			else if (i == 3) {
+				angs[PITCH] -= 0.65f * FLECHETTE_SPREAD;
+				angs[YAW] += 0.65f * FLECHETTE_SPREAD;
+			}
+			else if (i == 4) {
+				angs[PITCH] -= 0.65f * FLECHETTE_SPREAD;
+				angs[YAW] -= 0.65f * FLECHETTE_SPREAD;
+			}
 		}
-
 		AngleVectors( angs, fwd, NULL, NULL );
 
 		missile = CreateMissile( start, fwd, vel, 10000, ent );
@@ -214,11 +240,16 @@ void WP_flechette_alt_blow( gentity_t *ent )
 }
 
 //------------------------------------------------------------------------------
-static void WP_CreateFlechetteBouncyThing( vec3_t start, vec3_t fwd, gentity_t *self )
+static void WP_CreateFlechetteBouncyThing( vec3_t start, vec3_t fwd, gentity_t *self, int i )
 //------------------------------------------------------------------------------
 {
-	gentity_t	*missile = CreateMissile( start, fwd, 950 + Q_flrand(0.0f, 1.0f) * 700, 1500 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue );
+	gentity_t* missile; //= CreateMissile( start, fwd, 950 + Q_flrand(0.0f, 1.0f) * 700, 1500 + Q_flrand(0.0f, 1.0f) * 2000, self, qtrue );
 	
+	if(cg_tweakWeapons.integer & WT_FLECHETTE_ALT_SPRD)
+		missile = CreateMissileNew(start, fwd, ((1000 + 100 * (i)) * cg_projectileVelocityScale.value), 1500 + rand() * 2000, self, qtrue, qtrue);
+	else
+		missile = CreateMissileNew(start, fwd, (700 * cg_projectileVelocityScale.value) + rand() * 700, 1500 + rand() * 2000, self, qtrue, qtrue);
+
 	missile->e_ThinkFunc = thinkF_WP_flechette_alt_blow;
 
 	missile->s.weapon = WP_FLECHETTE;
@@ -241,6 +272,11 @@ static void WP_CreateFlechetteBouncyThing( vec3_t start, vec3_t fwd, gentity_t *
 	missile->splashDamage = weaponData[WP_FLECHETTE].splashDamage;
 	missile->splashRadius = weaponData[WP_FLECHETTE].splashRadius;
 
+	if (cg_tweakWeapons.integer & WT_FLECHETTE_ALT_DAM) {
+		missile->damage *= 0.85f;
+		missile->splashDamage *= 0.85f;
+	}
+
 	missile->svFlags = SVF_USE_CURRENT_ORIGIN;
 
 	missile->methodOfDeath = MOD_FLECHETTE_ALT;
@@ -250,7 +286,7 @@ static void WP_CreateFlechetteBouncyThing( vec3_t start, vec3_t fwd, gentity_t *
 }
 
 //---------------------------------------------------------
-static void WP_FlechetteAltFire( gentity_t *self )
+static void WP_FlechetteAltFire( gentity_t *self, int seed )
 //---------------------------------------------------------
 {
 	vec3_t 	dir, fwd, start, angs;
@@ -264,25 +300,37 @@ static void WP_FlechetteAltFire( gentity_t *self )
 	{
 		VectorCopy( angs, dir );
 
-		dir[PITCH] -= Q_flrand(0.0f, 1.0f) * 4 + 8; // make it fly upwards
-		dir[YAW] += Q_flrand(-1.0f, 1.0f) * 2;
+		if (cg_tweakWeapons.integer & WT_FLECHETTE_ALT_SPRD) {
+			dir[PITCH] -= 10;
+		}
+		else {
+			if (cg_tweakWeapons.integer & WT_PSEUDORANDOM_FIRE) {
+				dir[PITCH] -= Q_random(&seed) * 4 + 8;
+				dir[YAW] += Q_crandom(&seed) * 2;
+			}
+			else {
+				dir[PITCH] -= Q_flrand(0.0f, 1.0f) * 4 + 8; // make it fly upwards
+				dir[YAW] += Q_flrand(-1.0f, 1.0f) * 2;
+			}
+		}
+		
 		AngleVectors( dir, fwd, NULL, NULL );
 
-		WP_CreateFlechetteBouncyThing( start, fwd, self );
+		WP_CreateFlechetteBouncyThing( start, fwd, self, i );
 		self->client->sess.missionStats.shotsFired++;
 	}
 }
 
 //---------------------------------------------------------
-void WP_FireFlechette( gentity_t *ent, qboolean alt_fire )
+void WP_FireFlechette( gentity_t *ent, qboolean alt_fire, int seed )
 //---------------------------------------------------------
 {
 	if ( alt_fire )
 	{
-		WP_FlechetteAltFire( ent );
+		WP_FlechetteAltFire( ent, seed );
 	}
 	else
 	{
-		WP_FlechetteMainFire( ent );
+		WP_FlechetteMainFire( ent, seed );
 	}
 }

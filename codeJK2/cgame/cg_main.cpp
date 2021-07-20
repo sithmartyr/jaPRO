@@ -291,6 +291,7 @@ vmCvar_t	cg_tweakWeapons;
 vmCvar_t	cg_projectileVelocityScale;
 vmCvar_t	cg_fullInheritance;
 vmCvar_t	cg_projectileInheritance;
+vmCvar_t	cg_forceRegenTime;
 
 vmCvar_t	cg_thirdPerson;
 vmCvar_t	cg_thirdPersonRange;
@@ -409,6 +410,7 @@ static cvarTable_t cvarTable[] = {
 	{ &cg_projectileVelocityScale, "cg_projectileVelocityScale", "1", CVAR_ARCHIVE},
 	{ &cg_fullInheritance, "cg_fullInheritance", "0", CVAR_ARCHIVE },
 	{ &cg_projectileInheritance, "cg_projectileInheritance", "0", CVAR_ARCHIVE },
+	{ &cg_forceRegenTime, "cg_forceRegenTime", "100", CVAR_ARCHIVE },
 
 	{ &cg_thirdPerson, "cg_thirdPerson", "0", CVAR_SAVEGAME },
 	{ &cg_thirdPersonRange, "cg_thirdPersonRange", "80", CVAR_ARCHIVE },

@@ -59,7 +59,7 @@ void WP_FireDetPack( gentity_t *ent, qboolean alt_fire );
 int G_GetHitLocFromTrace( trace_t *trace, int mod );
 void WP_FireDisruptor( gentity_t *ent, qboolean alt_fire );
 void WP_EmplacedFire( gentity_t *ent );
-void WP_FireFlechette( gentity_t *ent, qboolean alt_fire );
+void WP_FireFlechette( gentity_t *ent, qboolean alt_fire, int seed );
 void prox_mine_stick( gentity_t *self, gentity_t *other, trace_t *trace );
 void prox_mine_think( gentity_t *ent );
 void WP_Melee( gentity_t *ent );

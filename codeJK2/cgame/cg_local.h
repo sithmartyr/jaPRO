@@ -603,6 +603,7 @@ extern	vmCvar_t		cg_tweakWeapons;
 extern	vmCvar_t		cg_projectileVelocityScale;
 extern	vmCvar_t		cg_fullInheritance;
 extern	vmCvar_t		cg_projectileInheritance;
+extern	vmCvar_t		cg_forceRegenTime;
 
 extern	vmCvar_t		cg_thirdPerson;
 extern	vmCvar_t		cg_thirdPersonRange;
@@ -1191,8 +1192,11 @@ void	CG_RunLightStyles( void );
 void	CG_SetLightstyle( int i );
 
 
-#define	WT_PROJ_SNIPER (1<<0)
-#define WT_NO_SPREAD (1<<1)
-#define WT_PSEUDORANDOM_FIRE (1<<2)
+#define	WT_PROJ_SNIPER        (1<<0) //1
+#define WT_NO_SPREAD          (1<<1) //2
+#define WT_PSEUDORANDOM_FIRE  (1<<2) //4
+#define WT_FLECHETTE_SPRD     (1<<3) //8
+#define WT_FLECHETTE_ALT_DAM  (1<<4) //16
+#define WT_FLECHETTE_ALT_SPRD (1<<5) //32
 
 #endif	//__CG_LOCAL_H__

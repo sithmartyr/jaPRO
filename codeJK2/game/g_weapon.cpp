@@ -650,7 +650,7 @@ void FireWeapon( gentity_t *ent, qboolean alt_fire )
 		break;
 
 	case WP_FLECHETTE:
-		WP_FireFlechette( ent, alt_fire );
+		WP_FireFlechette( ent, alt_fire, seed );
 		break;
 
 	case WP_ROCKET_LAUNCHER:

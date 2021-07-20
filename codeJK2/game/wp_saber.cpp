@@ -8396,7 +8396,12 @@ void WP_ForcePowersUpdate( gentity_t *self, usercmd_t *ucmd )
 		if ( self->client->ps.forcePowerRegenDebounceTime < level.time )
 		{
 			WP_ForcePowerRegenerate( self, 0 );
-			self->client->ps.forcePowerRegenDebounceTime = level.time + 100;
+			if (!cg_forceRegenTime.integer) {
+				self->client->ps.forcePowerRegenDebounceTime = level.time * cg_forceRegenTime.integer;
+			}
+			else {
+				self->client->ps.forcePowerRegenDebounceTime = level.time + cg_forceRegenTime.integer;
+			}
 		}
 	}
 }
