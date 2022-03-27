@@ -1375,10 +1375,10 @@ void CL_Shutdown( void ) {
 	Com_Printf( "-----------------------\n" );
 }
 
-extern vmCvar_t cg_widescreen;
+cvar_t *cg_widescreen = Cvar_Get ("cg_widescreen", "1", CVAR_ARCHIVE);
 
 static void CL_UpdateWidescreen(void) {
-	if (cg_widescreen.integer) {
+	if (cg_widescreen->integer) {
 		cls.screenWidth = (float)SCREEN_HEIGHT * cls.glconfig.vidWidth / cls.glconfig.vidHeight;
 	}
 	else {
