@@ -1297,7 +1297,7 @@ typedef struct Warp_s {
 	int				z;
 	short			yaw;
 } Warp_t;
-Warp_t	warpList[72];
+extern Warp_t	warpList[72];
 //japro
 
 //japro
@@ -1305,8 +1305,8 @@ typedef struct Route_s {
 	int				length;
 	ivec3_t			pos[4000]; //save mem?
 } Route_t;
-Route_t	redRouteList[6];
-Route_t	blueRouteList[6];
+extern Route_t	redRouteList[6];
+extern Route_t	blueRouteList[6];
 //japro
 
 //japro
@@ -1318,7 +1318,7 @@ typedef struct CosmeticUnlocks_s {
 	unsigned int	duration;
 	qboolean		active;
 } CosmeticUnlocks_t;
-CosmeticUnlocks_t cosmeticUnlocks[MAX_COSMETIC_UNLOCKS];
+extern CosmeticUnlocks_t cosmeticUnlocks[MAX_COSMETIC_UNLOCKS];
 //japro
 
 //japro
@@ -1329,7 +1329,7 @@ typedef struct VoteFloodProtect_s {
 	int					nextDropTime;
 } VoteFloodProtect_t;
 #define		voteFloodProtectSize 64
-VoteFloodProtect_t	voteFloodProtect[voteFloodProtectSize];//32 courses, 9 styles, 10 spots on highscore list
+extern VoteFloodProtect_t	voteFloodProtect[voteFloodProtectSize];//32 courses, 9 styles, 10 spots on highscore list
 //japro
 
 typedef struct level_locals_s {

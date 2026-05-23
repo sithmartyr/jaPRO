@@ -20,6 +20,13 @@ gentity_t		g_entities[MAX_ENTITIESTOTAL];
 gentity_t		*g_logicalents = &g_entities[MAX_GENTITIES]; // Quicker access xD
 gclient_t		g_clients[MAX_CLIENTS];
 
+Warp_t warpList[72];
+Route_t redRouteList[6], blueRouteList[6];
+CosmeticUnlocks_t cosmeticUnlocks[MAX_COSMETIC_UNLOCKS];
+VoteFloodProtect_t voteFloodProtect[voteFloodProtectSize];
+void (*Com_Error)( int level, const char *error, ... );
+void (*Com_Printf)(const char *msg, ... );
+
 int	dueltypes[MAX_CLIENTS];//JAPRO - Serverside - Fullforce Duels
 
 qboolean gDuelExit = qfalse;
